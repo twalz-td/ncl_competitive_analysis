@@ -4,905 +4,656 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Norwegian Cruise Line Competitive Analysis</title>
+<title>NCL Caribbean Competitive Analysis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#EDF2F7;
-    --abyss:#0B1E30;
-    --deep:#EFF4F9;
-    --panel:#FFFFFF; --panel-2:#FFFFFF;
-    --line:#D4DEE8; --line-soft:#E5ECF3;
-    --foam:#12283A; --mist:#4C6379; --faint:#6E8598;
-    --home:#0C88AA; --home-dim:#8FD3E4; --home-glow:rgba(12,136,170,.12);
-    --royal:#C68A14; --msc:#1E9E72; --princess:#8B5FC4; --celebrity:#7C899B;
-    --s:#0F9A85; --w:#B07E28; --o:#2E7BC4; --t:#C64B4B;
-    --shadow:0 18px 40px -22px rgba(30,60,95,.20);
-    --challenger:var(--royal);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:
-      radial-gradient(1200px 700px at 78% -8%, rgba(44,196,224,.10), transparent 60%),
-      radial-gradient(900px 600px at 5% 110%, rgba(75,120,190,.10), transparent 55%),
-      var(--bg);
-    color:var(--foam);
-    font-family:'Inter',system-ui,sans-serif;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-    padding:clamp(14px,2.4vw,34px);
-  }
-  .wrap{max-width:1280px;margin:0 auto}
-
-  /* ---------- Header ---------- */
-  .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--mist)}
-  .brand b{color:var(--foam);font-weight:700}
-  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--home);box-shadow:0 0 0 4px var(--home-glow)}
-  .prepared{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
-  .prepared b{color:var(--home)}
-
-  .hero{position:relative;border:1px solid var(--line);border-radius:20px;overflow:hidden;
-    background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);padding:clamp(22px,3.2vw,40px);margin-bottom:22px;box-shadow:var(--shadow);
-    display:flex;flex-wrap:wrap;gap:18px 24px;justify-content:space-between;align-items:flex-start}
-  .hero .contour{position:absolute;inset:0;opacity:.5;pointer-events:none}
-  .hero-content{position:relative;z-index:2;max-width:680px;flex:1 1 440px;min-width:0}
-  .hero .viewtabs{position:relative;z-index:2;margin-bottom:0;flex:none}
-  .eyebrow{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--home);margin-bottom:14px}
-  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.01em;margin-bottom:14px}
-  h1 em{font-style:italic;color:var(--home)}
-  .sub{color:var(--mist);font-size:clamp(14px,1.5vw,16.5px);max-width:640px}
-
-  /* ---------- Controls ---------- */
-  .controls{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:20px}
-  .ctl-block{border:1px solid var(--line);border-radius:16px;background:var(--panel-2);padding:15px 17px}
-  .ctl-label{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:11px;display:flex;align-items:center;gap:9px}
-  .ctl-label .num{color:var(--home)}
-  .pillrow{display:flex;flex-wrap:wrap;gap:9px}
-  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-  .pill{border:1px solid var(--line);background:var(--deep);color:var(--mist);border-radius:11px;padding:10px 15px;font-size:13.5px;font-weight:500;letter-spacing:.01em;transition:all .18s ease;display:flex;align-items:center;gap:9px}
-  .pill:hover{border-color:var(--faint);color:var(--foam);transform:translateY(-1px)}
-  .pill .chip{width:9px;height:9px;border-radius:2.5px;flex:none}
-  .pill[aria-pressed="true"]{color:var(--abyss);font-weight:600}
-  .pill.challenger[aria-pressed="true"]{background:var(--challenger);border-color:var(--challenger)}
-  .lens .pill[aria-pressed="true"]{background:var(--home);border-color:var(--home);color:var(--abyss)}
-  .lens .pill[aria-pressed="true"] .lensdot{background:var(--abyss)}
-  .lensdot{width:5px;height:5px;border-radius:50%;background:var(--faint)}
-
-  /* ---------- Battle readout (signature) ---------- */
-  .readout{border:1px solid var(--line);border-radius:18px;background:
-     radial-gradient(600px 200px at 50% 0%, rgba(44,196,224,.08), transparent 70%),var(--panel);
-     padding:clamp(18px,2.4vw,26px) clamp(18px,3vw,34px);margin-bottom:20px;box-shadow:var(--shadow)}
-  .readout-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-  .readout-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--faint)}
-  .readout-title b{color:var(--foam)}
-  .verdict-index{font-family:'Space Mono',monospace;font-size:12.5px;color:var(--mist)}
-  .verdict-index b{font-size:15px}
-
-  .gauge{position:relative;height:64px;margin:6px 0 8px}
-  .gauge-track{position:absolute;top:50%;left:0;right:0;height:10px;transform:translateY(-50%);
-    border-radius:999px;overflow:hidden;border:1px solid var(--line-soft);
-    background:linear-gradient(90deg, var(--challenger) 0%, rgba(147,173,198,.25) 50%, var(--home) 100%)}
-  .gauge-center{position:absolute;top:6px;bottom:6px;left:50%;width:1.5px;transform:translateX(-50%);background:rgba(20,50,80,.30);z-index:3}
-  .gauge-center::after{content:"PARITY";position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.16em;color:var(--faint);white-space:nowrap}
-  .needle{position:absolute;top:50%;width:20px;height:20px;border-radius:50%;transform:translate(-50%,-50%);
-    background:var(--foam);border:3px solid var(--home);z-index:4;
-    box-shadow:0 0 0 5px rgba(255,255,255,.85),0 6px 16px rgba(30,60,95,.20);
-    transition:left .6s cubic-bezier(.34,1.2,.4,1),border-color .3s ease}
-  .gauge-ends{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);position:absolute;left:0;right:0;bottom:-4px}
-  .gauge-ends .l-end{color:var(--challenger)}
-  .gauge-ends .r-end{color:var(--home)}
-
-  .takeaway{display:flex;gap:13px;align-items:flex-start;border-top:1px solid var(--line-soft);padding-top:15px;margin-top:12px}
-  .takeaway .tag{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--abyss);background:var(--home);padding:5px 8px;border-radius:6px;flex:none;margin-top:2px;font-weight:700}
-  .takeaway p{font-size:clamp(14px,1.6vw,16px);color:var(--foam);font-weight:500}
-  .takeaway strong{color:var(--home);font-weight:600}
-
-  /* ---------- SWOT arena ---------- */
-  .arena{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-  .team{border:1px solid var(--line);border-radius:18px;background:var(--panel-2);overflow:hidden;box-shadow:var(--shadow)}
-  .team-head{display:flex;align-items:center;gap:13px;padding:16px 20px;border-bottom:1px solid var(--line);position:relative}
-  .team-head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
-  .team.home .team-head::before{background:var(--home)}
-  .team.foe .team-head::before{background:var(--challenger)}
-  .team-badge{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:5px 9px;border-radius:6px;font-weight:700}
-  .team.home .team-badge{background:var(--home-glow);color:var(--home);border:1px solid var(--home-dim)}
-  .team.foe .team-badge{background:rgba(0,0,0,.04);color:var(--challenger);border:1px solid var(--line)}
-  .team-name{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(16px,2vw,21px);line-height:1.05}
-  .team-tag{font-size:11.5px;color:var(--faint);margin-top:1px}
-
-  .swot{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft)}
-  .quad{background:var(--panel-2);padding:15px 16px 16px;min-height:132px}
-  .quad-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:7px;margin-bottom:10px}
-  .quad-label .glyph{width:15px;height:15px;border-radius:4px;display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--abyss)}
-  .quad.s .glyph{background:var(--s)} .quad.s .quad-label{color:var(--s)}
-  .quad.w .glyph{background:var(--w)} .quad.w .quad-label{color:var(--w)}
-  .quad.o .glyph{background:var(--o)} .quad.o .quad-label{color:var(--o)}
-  .quad.t .glyph{background:var(--t)} .quad.t .quad-label{color:var(--t)}
-  .quad ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .quad li{font-size:12.8px;line-height:1.4;color:var(--mist);padding-left:14px;position:relative}
-  .quad li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.45}
-  .quad.s li{color:#177A6B}.quad.w li{color:#8A6420}.quad.o li{color:#2A6098}.quad.t li{color:#A44646}
-  .quad li b{color:var(--foam);font-weight:600}
-  .fade{animation:fade .45s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-  /* ---------- Pricing band (pricing lens only) ---------- */
-  .priceband{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:18px 20px 20px;margin-bottom:20px;display:none}
-  .priceband.show{display:block;animation:fade .45s ease}
-  .pb-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-  .pb-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
-  .pb-title b{color:var(--foam)}
-  .pb-note{font-size:11px;color:var(--faint)}
-  .pb-scale{position:relative;height:46px;border-radius:10px;background:linear-gradient(90deg,rgba(63,191,142,.14),rgba(75,155,224,.08) 55%,rgba(235,184,74,.16));border:1px solid var(--line-soft);margin-bottom:10px}
-  .pb-mark{position:absolute;top:0;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-  .pb-mark .pin{width:2px;height:14px;background:currentColor;border-radius:2px}
-  .pb-mark .nm{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;white-space:nowrap}
-  .pb-mark .pr{font-size:10px;color:var(--faint);white-space:nowrap}
-  .pb-axis{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
-
-  /* ---------- Footer ---------- */
-  .foot{border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
-  .foot p{font-size:11px;color:var(--faint);max-width:640px;line-height:1.55}
-  .foot .method b{color:var(--mist)}
-  .legend{display:flex;gap:14px;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-  .legend span{display:flex;align-items:center;gap:6px}
-  .legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
-
-  @media (max-width:820px){
-    .arena{grid-template-columns:1fr}
-    .team.foe{order:2}
-  }
-  @media (max-width:480px){
-    .swot{grid-template-columns:1fr}
-    .quad{min-height:0}
-  }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-  button:focus-visible,.pill:focus-visible{outline:2px solid var(--home);outline-offset:2px}
-  @media print{
-    body{background:var(--bg);-webkit-print-color-adjust:exact;print-color-adjust:exact}
-    .controls{break-inside:avoid}.arena{break-inside:avoid}
-  }
-  /* ---------- View tabs ---------- */
-  .viewtabs{display:inline-flex;gap:5px;background:var(--panel-2);border:1px solid var(--line);border-radius:13px;padding:5px;margin-bottom:22px}
-  .viewtab{font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);border-radius:9px;padding:10px 18px;transition:all .18s ease;display:flex;align-items:center;gap:8px}
-  .viewtab:hover{color:var(--foam)}
-  .viewtab[aria-pressed="true"]{background:var(--home);color:var(--abyss);font-weight:700}
-  .viewtab .vt-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
-  .view[hidden]{display:none}
-
-  /* ---------- Deployment map ---------- */
-  .maplayout{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start;margin-bottom:20px}
-  .mapcard{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#EAF2F8,#DCE9F3);box-shadow:var(--shadow)}
-  svg.map{display:block;width:100%;height:auto}
-  .mapcard .grid-line{stroke:#C6D6E4;stroke-width:.6;opacity:.5}
-  .mapcard .contour{fill:none;stroke:#0C88AA;stroke-width:.8}
-  .mapcard .region-label{fill:#5C7488;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
-  .node-ring{fill:none;stroke:#AFC2D2;stroke-width:1.1;opacity:.55}
-  .plabel{font-family:'Inter',sans-serif;font-size:9px;fill:#45607A;pointer-events:none}
-  .plabel.island{font-size:9px;font-weight:600}
-  .petal{transition:transform .35s ease,opacity .35s ease}
-  .diamond{transition:opacity .35s ease}
-  .node{cursor:pointer}
-  .node:hover .node-ring{stroke:var(--home);opacity:1}
-  .tooltip{position:absolute;pointer-events:none;z-index:20;background:#FFFFFF;border:1px solid var(--line);border-radius:11px;padding:11px 13px;min-width:150px;box-shadow:0 12px 30px rgba(30,60,95,.20);opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s}
-  .tooltip.show{opacity:1;transform:none}
-  .tt-name{font-family:'Fraunces',serif;font-weight:600;font-size:14.5px;margin-bottom:2px}
-  .tt-region{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
-  .tt-lines{display:flex;flex-direction:column;gap:5px}
-  .tt-line{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mist)}
-  .tt-line .sw{width:9px;height:9px;border-radius:2.5px;flex:none}
-  .tt-line.off{opacity:.3}
-  .tt-line .szn{margin-left:auto;font-family:'Space Mono',monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
-  .panel{border:1px solid var(--line);border-radius:16px;background:var(--panel-2);padding:16px 17px;margin-bottom:14px}
-  .p-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .p-label .num{color:var(--home)}
-  .linebtn{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--deep);border-radius:11px;padding:10px 12px;margin-bottom:8px;transition:all .16s ease;color:var(--mist)}
-  .linebtn:last-child{margin-bottom:0}
-  .linebtn:hover{border-color:var(--faint);transform:translateX(2px)}
-  .linebtn .sw{width:12px;height:12px;border-radius:3px;flex:none;transition:all .16s}
-  .linebtn .nm{font-size:13.5px;font-weight:500}
-  .linebtn .ct{margin-left:auto;font-family:'Space Mono',monospace;font-size:12px;color:var(--faint)}
-  .linebtn[aria-pressed="false"] .sw{background:transparent!important;box-shadow:inset 0 0 0 1.5px currentColor}
-  .linebtn[aria-pressed="false"]{opacity:.5}
-  .linebtn[aria-pressed="true"] .nm{color:var(--foam)}
-  .linebtn.home[aria-pressed="true"]{border-color:var(--home);box-shadow:0 0 0 1px var(--home-glow)}
-  .seasonrow{display:flex;gap:7px}
-  .seasonbtn{flex:1;border:1px solid var(--line);background:var(--deep);border-radius:10px;padding:9px 6px;font-size:11.5px;font-weight:500;color:var(--mist);transition:all .16s;text-align:center}
-  .seasonbtn:hover{border-color:var(--faint);color:var(--foam)}
-  .seasonbtn[aria-pressed="true"]{background:var(--home);border-color:var(--home);color:var(--abyss);font-weight:600}
-  .season-sub{font-size:10.5px;color:var(--faint);margin-top:9px;line-height:1.4}
-  .stat{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line-soft)}
-  .stat:last-child{border-bottom:none}
-  .stat .k{font-size:11.5px;color:var(--mist)}
-  .stat .v{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--home)}
-  .stat .v.small{font-size:12px;color:var(--foam);font-weight:400;text-align:right;max-width:150px}
-  .insight{border:1px solid var(--line);border-left:3px solid var(--home);border-radius:12px;background:var(--panel);padding:13px 15px;margin-top:14px}
-  .insight .tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--home);margin-bottom:6px}
-  .insight p{font-size:12.8px;color:var(--foam);line-height:1.5}
-  .maplegend{display:flex;gap:13px;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
-  .maplegend span{display:flex;align-items:center;gap:6px}
-  .maplegend i{width:9px;height:9px;display:inline-block}
-  .maplegend i.d{transform:rotate(45deg);border-radius:1px}
-  .maplegend i.c{border-radius:50%}
-  @media (max-width:960px){.maplayout{grid-template-columns:1fr}}
-
-  /* ---------- Brand vs delivery ---------- */
-  .brandlayout{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start;margin-bottom:20px}
-  @media (max-width:960px){.brandlayout{grid-template-columns:1fr}}
-  .brandselect{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
-  .bpill[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:var(--abyss);font-weight:600}
-  .brandcard{border:1px solid var(--line);border-radius:18px;background:var(--panel-2);padding:clamp(18px,2.4vw,26px);box-shadow:var(--shadow)}
-  .bc-head{border-bottom:1px solid var(--line-soft);padding-bottom:16px;margin-bottom:18px}
-  .bc-platform{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(20px,3vw,28px);line-height:1.06}
-  .bc-meta{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:6px}
-  .bc-claim{margin-top:13px;font-size:14px;color:var(--foam)}
-  .bc-claim .lbl{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--home);margin-right:8px}
-  .ameter-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
-  .ameter-title{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
-  .ameter-score{font-family:'Space Mono',monospace;font-size:12px;color:var(--mist)}
-  .ameter-score b{font-size:16px}
-  .ameter{position:relative;height:50px;margin:16px 0 6px}
-  .ameter-track{position:absolute;top:50%;left:0;right:0;height:9px;transform:translateY(-50%);border-radius:999px;border:1px solid var(--line-soft);background:linear-gradient(90deg,#E27070 0%, #E0A64B 46%, #33B9A4 100%)}
-  .ameter-needle{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;transform:translate(-50%,-50%);background:var(--foam);border:3px solid var(--home);box-shadow:0 0 0 5px rgba(255,255,255,.85),0 6px 16px rgba(30,60,95,.20);transition:left .5s cubic-bezier(.34,1.2,.4,1),border-color .3s ease;z-index:3}
-  .ameter-ends{position:absolute;left:0;right:0;bottom:-3px;display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
-  .ameter-chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
-  .achip{font-size:11.5px;color:var(--mist);border:1px solid var(--line);border-radius:8px;padding:6px 11px}
-  .achip b{color:var(--foam);margin-left:2px}
-  .cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border-radius:12px;overflow:hidden;margin-top:18px}
-  @media (max-width:560px){.cd-grid{grid-template-columns:1fr}}
-  .cd-col{background:var(--panel-2);padding:15px 16px}
-  .cd-col h4{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:11px;font-weight:400}
-  .cd-col.claim h4{color:var(--o)} .cd-col.deliver h4{color:var(--s)}
-  .cd-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .cd-col li{font-size:12.8px;padding-left:13px;position:relative;line-height:1.42}
-  .cd-col.claim li{color:#2A6098}.cd-col.deliver li{color:#177A6B}
-  .cd-col li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.45}
-  .trow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
-  .trow .terr{font-size:13px;color:var(--foam);font-weight:500}
-  .trow .owner{margin-left:auto;font-family:'Space Mono',monospace;font-size:9.5px;color:var(--faint);display:flex;align-items:center;gap:6px;text-align:right}
-  .trow .owner .sw{width:9px;height:9px;border-radius:2.5px;flex:none}
-  .topen{margin-top:15px;border:1px solid var(--home);border-radius:12px;background:var(--home-glow);padding:14px 15px}
-  .topen .lbl{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--home);margin-bottom:8px}
-  .topen .terr{font-family:'Fraunces',serif;font-size:17px;color:var(--foam);font-weight:600;margin-bottom:6px}
-  .topen p{font-size:12px;color:var(--mist);line-height:1.5}
-  /* ---------- Deployment atlas ---------- */
-  .atlas-controls{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:16px}
-  .ac-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
-  .seasonbtn .sb-sub{display:block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.05em;opacity:.7;margin-top:2px;font-weight:400;text-transform:none}
-  .statcards{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-  .statcard{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:13px 16px;min-width:150px;box-shadow:var(--shadow)}
-  .statcard.hl{border-color:var(--home);box-shadow:0 0 0 1px var(--home-glow)}
-  .sc-k{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
-  .sc-v{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--foam);line-height:1}
-  .sc-v span{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--mist)}
-  .atlas-wrap{max-height:74vh;overflow:auto;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow)}
-  .atlas{display:grid;grid-template-columns:minmax(196px,1.7fr) repeat(5,minmax(76px,1fr));gap:5px;padding:14px;min-width:660px}
-  .ah{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 4px 9px;position:sticky;top:0;background:var(--panel);z-index:3}
-  .ah.lcol{text-align:center;font-weight:700}
-  .ah.port{color:var(--faint)}
-  .aregion{grid-column:1 / -1;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--home);padding:13px 4px 5px;border-top:1px solid var(--line-soft);margin-top:4px}
-  .acell{border-radius:7px;min-height:40px}
-  .acell.portname{padding:5px 8px 5px 2px;display:flex;flex-direction:column;justify-content:center}
-  .pn{font-size:13px;font-weight:600;color:var(--foam);line-height:1.14}
-  .pl{font-size:10.5px;color:var(--faint);margin-top:1px}
-  .atag{margin-left:6px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--mist);border:1px solid var(--line);border-radius:4px;padding:1px 4px;white-space:nowrap}
-  .aexcl{display:block;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.05em;text-transform:uppercase;margin-top:3px;font-weight:700}
-  .acell.dc{transition:background .3s ease}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#EDF2F7;color:#12283A;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+:root{
+  --ncl:#0C88AA;--royal:#C68A14;--princess:#8B5FC4;--celebrity:#7C899B;--msc:#1E9E72;
+  --ncl-b:#2CC4E0;--royal-b:#EBB84A;--princess-b:#B98BE0;--celebrity-b:#C6D0DA;--msc-b:#3FBF8E;
+  --bg:#EDF2F7;--panel:#fff;--border:#D4DEE8;--bsoft:#E5ECF3;
+  --ink:#12283A;--mist:#4C6379;--faint:#6E8598;
+  --str:#0F9A85;--wkn:#B07E28;--opp:#2E7BC4;--thr:#C64B4B;
+}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:#F4F8FB}
+::-webkit-scrollbar-thumb{background:#D4DEE8;border-radius:99px}
+#root{height:100%;display:flex;flex-direction:column;max-width:1300px;margin:0 auto;box-shadow:0 0 40px rgba(0,0,0,0.12)}
+#header{flex-shrink:0;background:#fff;border-bottom:1px solid var(--border)}
+#strip{display:flex;align-items:center;justify-content:space-between;padding:8px 20px;border-bottom:1px solid var(--bsoft)}
+#hero{display:flex;align-items:flex-end;justify-content:space-between;padding:10px 20px 8px;gap:16px;flex-wrap:wrap}
+#tabnav{display:flex;gap:3px;background:#F4F8FB;border:1px solid var(--border);border-radius:12px;padding:4px;flex-shrink:0;flex-wrap:wrap}
+#view{flex:1;display:flex;overflow:hidden;min-height:0}
+#sidebar{width:25%;min-width:200px;border-right:1px solid var(--border);overflow-y:auto;padding:16px;background:#fff;flex-shrink:0}
+#canvas{flex:1;overflow-y:auto;padding:20px;background:var(--bg);min-width:0}
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 3px 14px -6px rgba(30,60,95,.13)}
+.lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.sec-head{margin-bottom:8px}
+.cpill{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:#F4F8FB;font-size:13px;font-weight:500;color:var(--mist);cursor:pointer;transition:all .15s ease;text-align:left;font-family:'Inter',sans-serif;line-height:1.3;margin-bottom:6px}
+.cpill:hover{border-color:var(--faint);color:var(--ink)}
+.cpill.on{background:var(--ncl);border-color:var(--ncl);color:#fff;font-weight:600}
+.cpill:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+.tabbt{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:8px;cursor:pointer;border:none;background:transparent;color:var(--faint);transition:all .15s ease;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tabbt:hover{color:var(--ink)}
+.tabbt.on{background:var(--ncl);color:#fff;font-weight:700}
+.tab-dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.7;display:inline-block;flex-shrink:0}
+.sw{width:9px;height:9px;border-radius:2px;display:inline-block;flex-shrink:0}
+/* SWOT quads */
+.qs li{color:#0F6B5E}.qw li{color:#7A5A1E}.qo li{color:#1E5A9E}.qt li{color:#9E3030}
+.qs .ql{color:#0F9A85}.qw .ql{color:#B07E28}.qo .ql{color:#2E7BC4}.qt .ql{color:#C64B4B}
+.qs .gh{background:#0F9A85}.qw .gh{background:#B07E28}.qo .gh{background:#2E7BC4}.qt .gh{background:#C64B4B}
+/* Gauge */
+.gauge-wrap{position:relative;height:9px;border-radius:999px;background:linear-gradient(90deg,#0F9A85 0%,#B07E28 54%,#C64B4B 100%);border:1px solid var(--bsoft);margin:8px 0}
+.gauge-needle{width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--ncl);box-shadow:0 0 0 4px rgba(12,136,170,.15),0 4px 12px rgba(0,0,0,.15);position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .5s cubic-bezier(.34,1.2,.4,1),border-color .3s ease;pointer-events:none}
+.gauge-parity{position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:rgba(18,40,58,.2)}
+/* Align meter */
+.align-wrap{position:relative;height:9px;border-radius:999px;background:linear-gradient(90deg,#C64B4B 0%,#B07E28 46%,#0F9A85 100%);margin:8px 0}
+.align-needle{width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--ncl);box-shadow:0 0 0 4px rgba(12,136,170,.15);position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .5s cubic-bezier(.34,1.2,.4,1),border-color .3s ease;pointer-events:none}
+/* Price band */
+.pb-scale{background:linear-gradient(90deg,rgba(63,191,142,.14),rgba(75,155,224,.08) 55%,rgba(235,184,74,.16));border:1px solid var(--bsoft);border-radius:10px;height:48px;position:relative}
+.pb-mark{position:absolute;top:0;bottom:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+/* Atlas */
+.atlas-cell{border-radius:6px;transition:background .2s ease;min-height:30px}
+/* Perceptual map tokens */
+.map-tok{position:absolute;transform:translate(-50%,-50%);z-index:10;transition:left .5s ease-in-out,top .5s ease-in-out;overflow:visible}.tok-ring{position:absolute;inset:-11px;border-radius:50%;border:1.5px solid currentColor;opacity:.38;pointer-events:none}
+.tok-dot{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#0F172A;letter-spacing:.02em;user-select:none;position:relative;z-index:1}
+/* Sidebar dividers */
+.sdiv{border-top:1px solid var(--bsoft);padding-top:14px;margin-top:6px}
+/* View fade in */
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fadein{animation:fadeIn .22s ease}
+/* Quad grid */
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bsoft)}
+.quad-cell{background:#fff;padding:10px 10px 12px}
+.quad-cell ul{list-style:none;margin-top:6px}
+.quad-cell li{font-size:12px;padding-left:10px;position:relative;margin-bottom:5px;line-height:1.4}
+.quad-cell li::before{content:'';position:absolute;left:0;top:6px;width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5}
+.ql-row{display:flex;align-items:center;gap:6px}
+.gh{width:16px;height:16px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <div class="topbar">
-    <div class="brand"><span class="dot"></span><b>MMGY</b>&nbsp;·&nbsp;Data&nbsp;Strategy</div>
-    <div class="prepared">Norwegian Cruise Line&nbsp;·&nbsp;Caribbean</div>
-  </div>
-
-  <header class="hero">
-    <svg class="contour" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="none" stroke="#0C88AA" stroke-width="1">
-        <path d="M0,210 C220,170 340,250 560,205 C780,160 900,240 1200,195" opacity=".16"/>
-        <path d="M0,235 C220,200 340,275 560,232 C780,190 900,266 1200,222" opacity=".12"/>
-        <path d="M0,262 C220,232 340,296 560,260 C780,222 900,292 1200,250" opacity=".08"/>
-      </g>
-    </svg>
-    <div class="hero-content">
-      <h1 id="hero-title">Norwegian Cruise Line Competitive Analysis</h1>
-      <p class="sub" id="hero-sub">A side-by-side SWOT of Norwegian Cruise Line against Royal Caribbean, MSC, Princess, and Celebrity across five factors: private islands, pricing, itineraries, onboard, and brand. Select a competitor and a lens to compare.</p>
-    </div>
-    <div class="viewtabs" id="viewtabs" role="group" aria-label="Select view">
-      <button class="viewtab" data-view="swot" type="button"><span class="vt-dot"></span>Head-to-Head SWOT</button>
-      <button class="viewtab" data-view="map" type="button"><span class="vt-dot"></span>Deployment Atlas</button>
-      <button class="viewtab" data-view="brand" type="button"><span class="vt-dot"></span>Brand vs. Delivery</button>
-    </div>
-  </header>
-
-  <section class="view" id="view-swot">
-
-  <div class="controls">
-    <div class="ctl-block">
-      <div class="ctl-label"><span class="num">01</span>&nbsp;Select challenger</div>
-      <div class="pillrow" id="foes" role="group" aria-label="Select challenger"></div>
-    </div>
-    <div class="ctl-block lens">
-      <div class="ctl-label"><span class="num">02</span>&nbsp;Select strategic lens</div>
-      <div class="pillrow" id="lenses" role="group" aria-label="Select lens"></div>
-    </div>
-  </div>
-
-  <section class="readout" aria-live="polite">
-    <div class="readout-top">
-      <div class="readout-title">Head-to-head · <b id="ro-matchup">NCL vs. Royal Caribbean</b> · <span id="ro-lens">Overview</span></div>
-      <div class="verdict-index">Advantage index&nbsp; <b id="ro-index">–35</b></div>
-    </div>
-    <div class="gauge">
-      <div class="gauge-track"></div>
-      <div class="gauge-center"></div>
-      <div class="needle" id="needle" style="left:32.5%"></div>
-      <div class="gauge-ends">
-        <span class="l-end" id="end-l">Royal leads</span>
-        <span class="r-end">NCL leads</span>
+<div id="root">
+  <div id="header">
+    <div id="strip">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--ncl);box-shadow:0 0 0 3px rgba(12,136,170,.2);display:inline-block"></span>
+        <span class="lbl"><b style="color:var(--ink)">MMGY</b> &middot; Data Strategy</span>
       </div>
+      
     </div>
-    <div class="takeaway">
-      <span class="tag">So&nbsp;what</span>
-      <p id="ro-take">Royal wins on scale; NCL wins by out-storytelling it on inclusive value and flexibility — not by trying to out-build it.</p>
-    </div>
-  </section>
-
-  <div class="arena">
-    <div class="team home">
-      <div class="team-head">
-        <span class="team-badge">Home</span>
+    <div id="hero">
+      <div style="display:flex;align-items:center;gap:20px">
+        <img src="data:image/png;base64,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" alt="NCL" style="height:64px;width:auto;display:block">
         <div>
-          <div class="team-name">Norwegian Cruise Line</div>
-          <div class="team-tag" id="home-tag">Freestyle · inclusive value · The Haven</div>
+        <h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:clamp(18px,2.4vw,30px);color:#0B1E30;line-height:1.1">Norwegian Cruise Line Competitive Analysis</h1>
+        <p id="sub" style="font-size:13px;color:var(--mist);margin-top:4px"></p>
         </div>
       </div>
-      <div class="swot" id="home-swot"></div>
-    </div>
-    <div class="team foe">
-      <div class="team-head">
-        <span class="team-badge" id="foe-badge">Challenger</span>
-        <div>
-          <div class="team-name" id="foe-name">Royal Caribbean</div>
-          <div class="team-tag" id="foe-tag">Scale · Perfect Day · best entertainment</div>
-        </div>
-      </div>
-      <div class="swot" id="foe-swot"></div>
+      <nav id="tabnav"></nav>
     </div>
   </div>
-
-  <section class="priceband" id="priceband" aria-label="Illustrative pricing band">
-    <div class="pb-head">
-      <div class="pb-title">Illustrative · <b>7-night Caribbean lead fare, Florida homeport</b></div>
-      <div class="pb-note">Per person, double occ., cruise-only lead-in · 2026 sailings · directional, not a normalized quote</div>
-    </div>
-    <div class="pb-scale" id="pb-scale"></div>
-    <div class="pb-axis"><span>◄ Value floor</span><span>Mid band</span><span>Newest-ship premium ►</span></div>
-  </section>
-
-  <footer class="foot">
-    <div>
-      <p class="method"><b>Reading the gauge.</b> The needle plots NCL's advantage on the active lens: left = the challenger leads, right = NCL leads, center = parity. The <b>advantage index</b> (−100 to +100) is MMGY's directional read from current deployment, island investment, fare posture, and brand signals — a conversation-starter, not a scorecard.</p>
-      <p style="margin-top:8px" class="method"><b>Data note.</b> Built on public 2026 deployment, itinerary, island-investment and fare data pulled July 2026. Pricing is directional; a boardroom-grade version normalizes fares to a single week, cabin category and homeport. NCL's "open bar ashore" advantage rides the <b>Free at Sea Plus</b> tier (from $49.99pp/day), represented here as such — not oversold as fully free.</p>
-    </div>
-    <div class="legend" aria-hidden="true">
-      <span><i style="background:var(--s)"></i>Strengths</span>
-      <span><i style="background:var(--w)"></i>Weaknesses</span>
-      <span><i style="background:var(--o)"></i>Opportunities</span>
-      <span><i style="background:var(--t)"></i>Threats</span>
-    </div>
-  </footer>
-  </section>
-
-  <section class="view" id="view-map" hidden>
-    <div class="atlas-controls">
-      <div>
-        <div class="ac-label">Season</div>
-        <div class="seasonrow" id="atlas-seasons"></div>
-      </div>
-      <div>
-        <div class="ac-label">Region</div>
-        <div class="pillrow" id="atlas-regions"></div>
-      </div>
-    </div>
-    <div class="statcards" id="atlas-stats"></div>
-    <div class="atlas-wrap">
-      <div class="atlas" id="atlas"></div>
-    </div>
-
-    <footer class="foot">
-      <div>
-        <p class="method"><b>Reading the grid.</b> Each cell is a line's presence at a port in the selected season. Solid = sails there this season; faded = sails there only in another season; blank = no call. ★ marks a port only one line in the set serves. Switch season and region to watch coverage expand and contract.</p>
-        <p style="margin-top:8px" class="method"><b>Data.</b> 49 Caribbean ports across NCL, Royal Caribbean, Princess, Celebrity and MSC, by season (Winter High · Summer · Shoulder), from the uploaded deployment dataset. Representative patterns — verify against published itineraries before external use.</p>
-      </div>
-      <div class="maplegend" aria-hidden="true">
-        <span><i class="c" style="background:var(--home)"></i>Sails this season</span>
-        <span><i class="c" style="background:var(--home);opacity:.28"></i>Other season</span>
-        <span><i class="c" style="background:#E7EAEE"></i>No call</span>
-      </div>
-    </footer>
-  </section>
-
-  <section class="view" id="view-brand" hidden>
-    <div class="brandselect" id="brandselect" role="group" aria-label="Select cruise line"></div>
-    <div class="brandlayout">
-      <div class="brandcard">
-          <div class="bc-head">
-            <div class="bc-platform" id="bc-platform">—</div>
-            <div class="bc-meta" id="bc-meta">—</div>
-            <div class="bc-claim"><span class="lbl">Claims to own</span><span id="bc-claims">—</span></div>
-          </div>
-          <div class="ameter-top">
-            <span class="ameter-title">Story–product alignment</span>
-            <span class="ameter-score">Alignment&nbsp;<b id="b-score">—</b></span>
-          </div>
-          <div class="ameter">
-            <div class="ameter-track"></div>
-            <div class="ameter-needle" id="b-needle" style="left:40%"></div>
-            <div class="ameter-ends"><span>Claim ≠ delivery</span><span>Claim = delivery</span></div>
-          </div>
-          <div class="ameter-chips">
-            <span class="achip">Product truth&nbsp;<b id="bc-prod">—</b></span>
-            <span class="achip">Story coherence&nbsp;<b id="bc-story">—</b></span>
-          </div>
-          <div class="cd-grid">
-            <div class="cd-col claim">
-              <h4>The claim · marketing</h4>
-              <ul id="bc-claimlist"></ul>
-            </div>
-            <div class="cd-col deliver">
-              <h4>The delivery · product</h4>
-              <ul id="bc-deliverlist"></ul>
-            </div>
-          </div>
-          <div class="insight" style="margin-top:16px">
-            <div class="tag">Verdict</div>
-            <p id="bc-verdict">—</p>
-          </div>
-        </div>
-      <div>
-        <div class="panel">
-          <div class="p-label">Territory ownership</div>
-          <div id="tboard"></div>
-          <div class="topen">
-            <div class="lbl">Still open · NCL's wedge</div>
-            <div class="terr">Generous inclusion, fused with freedom</div>
-            <p>NCL now leads on freedom &amp; flexibility (“It's Different Out Here”). Still unclaimed: the inclusion layer — “premium without pretense, the freedom to have it all, all included” (open bar ashore, Free at Sea). Secondary open flags: solo travelers, flexible multigenerational.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <footer class="foot">
-      <div>
-        <p class="method"><b>Reading this.</b> The alignment meter rates how well each brand's marketing claim matches what it actually delivers. High = story and product agree (Royal, Celebrity). Norwegian is rising: its new “It's Different Out Here” platform re-anchors on freedom and flexibility — the territory its product actually backs — and that story is now fronting its Caribbean creative. The remaining gap is delivery and consistency, not positioning.</p>
-        <p style="margin-top:8px" class="method"><b>Sources.</b> Brand platforms and campaigns per public 2024–2026 agency and trade reporting; alignment and territory reads are MMGY's assessment, directional for discussion.</p>
-      </div>
-      <div class="maplegend" aria-hidden="true">
-        <span><i class="c" style="background:var(--o)"></i>Claim</span>
-        <span><i class="c" style="background:var(--s)"></i>Delivery</span>
-        <span><i class="d" style="background:var(--home)"></i>Open lane</span>
-      </div>
-    </footer>
-  </section>
-
+  <div id="view">
+    <div id="sidebar"></div>
+    <div id="canvas"></div>
+  </div>
 </div>
-
 <script>
-/* ---------------- DATA ---------------- */
-const HOME_TAGS = {
-  overview:"Freestyle · inclusive value · The Haven",
-  islands:"Great Stirrup Cay · Great Tides · open bar ashore",
-  pricing:"Free at Sea bundling · mid-band entry",
-  itineraries:"7-nt E/W Caribbean · Miami + Orlando · solo Studios",
-  onboard:"Broadway at sea · Indulge · The Haven · Studios",
-  brand:"Freestyle innovator · identity in flux"
-};
+/* ================================================================
+   DATA
+================================================================ */
+const C={ncl:'#0C88AA',royal:'#C68A14',princess:'#8B5FC4',celebrity:'#7C899B',msc:'#1E9E72'};
+const BRIGHT={ncl:'#2CC4E0',royal:'#EBB84A',princess:'#B98BE0',celebrity:'#C6D0DA',msc:'#3FBF8E'};
+const LK=['ncl','royal','princess','celebrity','msc'];
+const LN={ncl:'Norwegian',royal:'Royal Caribbean',princess:'Princess',celebrity:'Celebrity',msc:'MSC'};
+const LS={ncl:'NCL',royal:'Royal',princess:'Princess',celebrity:'Celebrity',msc:'MSC'};
 
-// Home (NCL) SWOT by lens
-const NCL = {
-  overview:{
-    s:["<b>Freestyle DNA</b> + genuinely inclusive value","Newest hardware: Aqua (’25), Luna (Mar ’26)","Great Stirrup Cay + <b>Great Tides Waterpark</b> (Sep ’26)"],
-    w:["Brand whiplash: <b>More at Sea ↔ Free at Sea</b> reversal","Admitted revenue-management execution gaps","Entered 2026 <b>behind the booking curve</b>"],
-    o:["Own the <b>“all-inclusive island day”</b> narrative","Turn new ships + Great Tides into a real story"],
-    t:["RCG shares CocoCay across Royal + Celebrity","Carnival’s Celebration Key; activist-investor pressure"]
-  },
-  islands:{
-    s:["$150M pier — <b>two ships dock</b>, tender bottleneck gone","Great Tides: 19 slides, 800-ft river, <b>first cliffside jumps</b>","<b>Open bar ashore</b> via Free at Sea Plus; + Harvest Caye"],
-    w:["~1M guests vs CocoCay’s ~2M/6k-a-day maturity","Great Tides opens <b>Sep 4 — mid-hurricane season</b>","Single Bahamas island; no owned Western-Caribbean isle"],
-    o:["Sell the island as a <b>destination, not a stop</b>","Make “included ashore” the ownable wedge"],
-    t:["Perfect Day Mexico (’27) + Celebration Key (Nov ’26)","Rivals expand islands into <b>new regions</b>"]
-  },
-  pricing:{
-    s:["Free at Sea bundling <b>narrows true out-the-door cost</b>","Strong value-perception lever if told well"],
-    w:["Base fares read mid-premium while equity lags rivals","<b>Discount-reliant</b> to fill — behind booking curve"],
-    o:["Win the <b>“what a week actually costs”</b> comparison","Quantify included value vs à-la-carte rivals"],
-    t:["MSC value floor (~$700) undercuts headline","Royal commands premium on newest ships"]
-  },
-  itineraries:{
-    s:["<b>Broadest footprint in the set</b> — 42 of 49 ports","4 exclusive calls: Great Stirrup Cay, Harvest Caye, Samaná, Guatemala","Solo-friendly Studios; flexible Freestyle structure"],
-    w:["29 ports are shared by all five — coverage alone won't differentiate","The only gaps are rivals' private isles (CocoCay, Labadee)"],
-    o:["Merchandise the <b>exclusives</b> + deeper calls rivals skip","Turn breadth into story: “we go where they don't”"],
-    t:["Everyone clusters the same core E/W ports","Rivals' owned islands NCL structurally can't match"]
-  },
-  onboard:{
-    s:["Widest entertainment — <b>Broadway at sea</b>","Indulge Food Hall; The Haven; solo Studio Lounge"],
-    w:["Many premium features <b>cost extra</b> vs base fare","Premium aspiration outpaces consistent execution"],
-    o:["Package flexible + inclusive as one <b>premium-value</b> story"],
-    t:["Celebrity culinary/design; Royal Icon-class thrills","Princess Medallion friction-removal"]
-  },
-  brand:{
-    s:["Distinctive <b>Freestyle</b> heritage; innovator equity","The Haven halo"],
-    w:["<b>Whiplash</b>: More at Sea scrapped in a year","GSC drink-policy reversal; self-named “sea of sameness”"],
-    o:["A <b>consistent, differentiated</b> story is the big unlock","(This is precisely MMGY’s remit)"],
-    t:["Rivals with sharper, stable identities crowd the middle"]
+const HTAGS={
+  overview:'Freestyle \u00b7 inclusive value \u00b7 The Haven',
+  islands:'Great Stirrup Cay \u00b7 Great Tides \u00b7 Free at Sea Plus ashore',
+  pricing:'Free at Sea bundling \u00b7 mid-band entry',
+  itineraries:'42 ports \u00b7 4 exclusives \u00b7 Miami + Orlando \u00b7 solo Studios',
+  onboard:'Broadway at sea \u00b7 Indulge \u00b7 The Haven \u00b7 Studios',
+  brand:'"It\'s Different Out Here" \u00b7 Freestyle innovator'
+};
+const NCL_SW={
+  overview:{s:['<b>Freestyle DNA</b> + genuinely inclusive value','Newest hardware: Aqua (\'25), Luna (Mar \'26)','Great Stirrup Cay + <b>Great Tides Waterpark</b> (Sep \'26)'],w:['Brand whiplash: <b>More at Sea \u2192 Free at Sea</b> reversal','Admitted revenue-management execution gaps','Entered 2026 <b>behind the booking curve</b>'],o:['Own the <b>"all-inclusive island day"</b> narrative','Turn new ships + Great Tides into a real story'],t:['RCG shares CocoCay across Royal + Celebrity','Carnival\'s Celebration Key; activist-investor pressure']},
+  islands:{s:['$150M pier \u2014 <b>two ships dock</b>, tender bottleneck gone','Great Tides: 19 slides, 800-ft river, <b>cliffside jumps</b>','<b>Free at Sea Plus</b> includes open bar ashore; + Harvest Caye'],w:['~1M guests vs CocoCay\'s ~2M/6k-a-day maturity','Great Tides opens <b>Sep 4 \u2014 mid-hurricane season</b>','Single Bahamas island; no owned Western-Caribbean isle'],o:['Sell the island as a <b>destination, not a stop</b>','Make "included ashore" the ownable wedge'],t:['Perfect Day Mexico (\'27) + Celebration Key (Nov \'26)','Rivals expand islands into <b>new regions</b>']},
+  pricing:{s:['Free at Sea bundling <b>narrows true out-the-door cost</b>','Strong value-perception lever if told well'],w:['Base fares read mid-premium while equity lags rivals','<b>Discount-reliant</b> to fill \u2014 behind booking curve'],o:['Win the <b>"what a week actually costs"</b> comparison','Quantify included value vs \u00e0-la-carte rivals'],t:['MSC value floor (~$700) undercuts headline','Royal commands premium on newest ships']},
+  itineraries:{s:['<b>Broadest footprint in the set</b> \u2014 42 of 49 ports','4 exclusive calls: Great Stirrup Cay, Harvest Caye, Saman\u00e1, Guatemala','Solo-friendly Studios; flexible Freestyle structure'],w:['29 ports shared by all five \u2014 coverage alone won\'t differentiate','Only gaps are rivals\' private isles (CocoCay, Labadee)'],o:['Merchandise the <b>exclusives</b> + deeper calls rivals skip','Turn breadth into story: "we go where they don\'t"'],t:['Everyone clusters the same core E/W ports','Rivals\' owned islands NCL structurally can\'t match']},
+  onboard:{s:['Widest entertainment \u2014 <b>Broadway at sea</b>','Indulge Food Hall; The Haven; solo Studio Lounge'],w:['Many premium features <b>cost extra</b> vs base fare','Premium aspiration outpaces consistent execution'],o:['Package flexible + inclusive as one <b>premium-value</b> story'],t:['Celebrity culinary/design; Royal Icon-class thrills','Princess Medallion friction-removal']},
+  brand:{s:['<b>"It\'s Different Out Here"</b> \u2014 rights the strategic ship','Freestyle heritage; The Haven halo'],w:['<b>Whiplash</b>: More at Sea scrapped in a year','Delivery + consistency still to prove under new platform'],o:['Inclusion story (Free at Sea) is still unclaimed at brand level'],t:['Rivals with sharper, stable identities crowd the middle']}
+};
+const FOES={
+  royal:{name:'Royal Caribbean',short:'Royal',tags:{overview:'Scale \u00b7 Perfect Day \u00b7 best entertainment',islands:'Perfect Day at CocoCay \u00b7 Island Collection',pricing:'Premium on newest ships \u00b7 \u00e0-la-carte',itineraries:'High frequency \u00b7 tight core \u00b7 Miami + Orlando',onboard:'Icon-class thrills \u00b7 7 pools \u00b7 shows',brand:'Family thrills \u00b7 clearest identity'},
+    sw:{overview:{s:['Market-leading <b>scale</b>; Icon & Star of the Seas','Perfect Day at CocoCay flywheel (~2M/yr)','Best-in-class entertainment'],w:['Nearly everything premium on-island is upcharge','Mega-ship density can feel theme-park'],o:['Extend Island Collection (Perfect Day Mexico \'27)'],t:['Premiumization ceiling','NCL/Celebrity nibble segments']},
+        islands:{s:['CocoCay ~2M/yr; Thrill Waterpark; Hideaway','<b>Shared across Royal + Celebrity</b>'],w:['Waterpark, cabanas, balloon = <b>paid add-ons</b>','Nickel-and-dime perception'],o:['Multi-region island network (Bahamas + Mexico \'27)'],t:['NCL\'s <b>"included ashore"</b> contrast']},
+        pricing:{s:['Commands <b>premium</b> on newest ships','Strong yield management'],w:['\u00c0-la-carte inflates true trip cost','Drink/wifi/dining stack <b>50\u2013100%</b> on headline'],o:['Upsell ecosystem is a revenue engine'],t:['NCL inclusive framing = "expensive once you add it up"']},
+        itineraries:{s:['High sailing frequency on a tight core (fewest unique ports \u2014 35)','Every sailing hits CocoCay; Miami + Orlando'],w:['Itinerary sameness masked by <b>ship-as-destination</b>'],o:['Ship-as-destination reduces port dependence'],t:['Guests wanting real port time prefer rivals']},
+        onboard:{s:['Icon-class thrills, 7 pools, entertainment breadth','Family gravity'],w:['Adults / quiet-seekers underserved vs Celebrity'],o:['Own the family vacation'],t:['NCL Haven + Celebrity peel off higher-yield guests']},
+        brand:{s:['Clearest identity \u2014 <b>family thrills</b> + Perfect Day','Consistent 50+ years'],w:['Premium perception capped'],o:['Reliable first-cruise pick'],t:['Premium-seekers trade up and out']}},
+    idx:{overview:-35,islands:-45,pricing:25,itineraries:-20,onboard:-30,brand:-40},
+    take:{overview:'Royal wins on scale; NCL wins by <strong>out-storytelling</strong> it on inclusive value and flexibility \u2014 not by trying to out-build it.',islands:'Great Tides narrows the thrill gap. NCL\'s ownable counter is <strong>"included," not "bigger"</strong> \u2014 Free at Sea Plus ashore is the wedge Royal can\'t match.',pricing:'This is NCL\'s best <strong>offensive</strong> lens. The "what a week actually costs" comparison favors inclusive NCL once Royal\'s add-ons stack up.',itineraries:'Royal sells the ship. NCL can sell the ship <strong>and</strong> a differentiated island day plus real flexibility \u2014 and reaches more ports.',onboard:'Don\'t fight Royal on thrills. Win the <strong>flexible-plus-premium</strong> (Haven) guest Royal underserves.',brand:'Royal\'s brand is stable and singular. NCL\'s new platform is the right call \u2014 now the job is <strong>consistency</strong>.'}},
+  msc:{name:'MSC Cruises',short:'MSC',tags:{overview:'Value \u00b7 European flavor \u00b7 Yacht Club',islands:'Ocean Cay Marine Reserve \u00b7 eco angle',pricing:'Lowest headline \u00b7 kids sail free',itineraries:'Miami/Orlando/NYC \u00b7 two island days',onboard:'Yacht Club enclave \u00b7 value dining',brand:'Value + European \u00b7 low U.S. awareness'},
+    sw:{overview:{s:['<b>Value leader</b>; kids-sail-free; European flavor','Yacht Club luxury enclave; MSC World America (\'25)'],w:['Thin <b>U.S. brand awareness</b>','Less differentiated for U.S. families'],o:['Ocean Cay two-day itineraries; U.S. growth'],t:['Undifferentiated vs Royal/NCL onboard for U.S. mainstream']},
+        islands:{s:['Ocean Cay: <b>reclaimed industrial site \u2192 marine reserve</b>','Some itineraries = <b>two full island days</b>'],w:['Less thrill infrastructure than CocoCay / Great Tides'],o:['Sustainability / eco positioning is distinctive'],t:['Thrill arms race (Great Tides, CocoCay) out-spends it']},
+        pricing:{s:['<b>Lowest headline fares</b> (~$700); kids sail free'],w:['Add-ons & perceived-value gaps; upsell to Yacht Club'],o:['Value-seeker capture in soft-demand market'],t:['Race-to-bottom margin risk']},
+        itineraries:{s:['Miami + Port Canaveral + NYC; two-island-day novelty'],w:['Similar core ports; European feel not for everyone'],o:['Novel routing (double Ocean Cay)'],t:['Sameness across the field']},
+        onboard:{s:['Yacht Club enclave; solid value dining'],w:['Entertainment / buzz below Royal & NCL for U.S. guests'],o:['Yacht Club as premium wedge'],t:['NCL Haven competes for the enclave guest']},
+        brand:{s:['Clear <b>value + European</b> identity'],w:['Low U.S. familiarity & consideration'],o:['Room to grow U.S. mindshare'],t:['Boxed in by Royal/NCL awareness in the U.S.']}},
+    idx:{overview:5,islands:15,pricing:-20,itineraries:10,onboard:20,brand:15},
+    take:{overview:'MSC pressures NCL <strong>from below on price</strong>. NCL must not chase the sticker \u2014 compete on included value and entertainment.',islands:'Great Tides gives NCL a thrill story MSC can\'t match. MSC\'s <strong>eco angle</strong> is the one thing to watch and out-narrate.',pricing:'NCL loses the sticker war and <strong>shouldn\'t fight it</strong>. Reframe "value = what\'s included," where NCL wins.',itineraries:'Match MSC\'s routing novelty by dialing up the <strong>island day + flexibility</strong>.',onboard:'NCL\'s entertainment and Haven <strong>out-punch</strong> MSC onboard. Press it.',brand:'U.S. brand equity is an asset vs MSC. NCL\'s real problem is <strong>above</strong> it, not below.'}},
+  princess:{name:'Princess Cruises',short:'Princess',tags:{overview:'Premium couples \u00b7 Medallion \u00b7 Love Boat',islands:'Princess Cays \u00b7 Celebration Key (Nov \'26)',pricing:'Premium \u00b7 Plus/Premier bundles',itineraries:'38 ports \u00b7 More Ashore late stays',onboard:'Medallion tech \u00b7 Sphere-class \u00b7 wine',brand:'Love Boat equity \u00b7 skews older'},
+    sw:{overview:{s:['Premium-for-couples; <b>Love Boat</b> heritage','Medallion <b>frictionless tech</b>; Sun & Star Princess'],w:['Princess Cays <b>tenders</b> (no pier)','Older core fleet outside Sphere ships'],o:['Celebration Key upgrade; tech-led loyalty'],t:['NCL / Celebrity premium overlap']},
+        islands:{s:['<b>Celebration Key</b> (Grand Bahama) opens Nov \'26'],w:['Princess Cays <b>tenders ashore</b> \u2014 slow, weather-exposed'],o:['Celebration Key resets its island game overnight'],t:['Behind on owned-island thrills until CK scales']},
+        pricing:{s:['Premium positioning; Plus / Premier bundles'],w:['Higher entry; value-seekers look elsewhere'],o:['Bundle clarity'],t:['NCL inclusive framing competes on value-premium']},
+        itineraries:{s:['38 ports across all Caribbean regions; More Ashore late-night port stays'],w:['NCL out-covers Princess by 4 ports (42 vs 38)'],o:['Region breadth + late stays = differentiated'],t:['NCL\'s newer-ship pull and greater breadth']},
+        onboard:{s:['<b>Medallion</b>: order-anywhere, keyless, locate party'],w:['Fewer thrills; older vibe'],o:['Tech as a loyalty moat'],t:['Younger / family guests prefer NCL & Royal energy']},
+        brand:{s:['Iconic <b>Love Boat</b> equity; premium-couples clarity'],w:['Skews older; less youthful pull'],o:['Heritage + tech story'],t:['Cedes "flexible premium" to NCL']}},
+    idx:{overview:-5,islands:20,pricing:5,itineraries:8,onboard:-5,brand:-10},
+    take:{overview:'Princess and NCL fight for the <strong>premium-curious</strong> guest. NCL\'s edge is flexibility + thrill breadth.',islands:'NCL leads on island <strong>today</strong>. Celebration Key (Nov \'26) is the threat to pre-empt.',pricing:'Both sell bundles. NCL can win the <strong>clarity</strong> contest \u2014 make "what\'s included" unmistakable.',itineraries:'NCL actually <strong>out-covers Princess</strong> on ports (42 vs 38). The real contest is Princess\'s late-night stays vs NCL\'s island-day quality.',onboard:'Medallion is a real friction-removal edge. NCL counters with <strong>energy, entertainment, and Haven</strong>.',brand:'Princess\'s brand is stable and clear. NCL\'s opening is the <strong>"flexible premium"</strong> lane Princess leaves to younger guests.'}},
+  celebrity:{name:'Celebrity Cruises',short:'Celebrity',tags:{overview:'Modern luxury \u00b7 The Retreat \u00b7 All Included',islands:'Borrows CocoCay via RCG',pricing:'All Included fare \u00b7 higher, transparent',itineraries:'7-nt premium \u00b7 FL ports',onboard:'Culinary \u00b7 Eden \u00b7 Retreat \u00b7 adults-calm',brand:'Sharpest premium-modern identity'},
+    sw:{overview:{s:['<b>Cleanest premium identity</b>; culinary + design rep','The Retreat; All Included fare; Edge series'],w:['Limited family / thrill appeal','No owned island identity; smaller scale'],o:['Premium modern-luxury growth; Retreat yield'],t:['NCL Haven competes for the premium enclave guest']},
+        islands:{s:['Gets <b>CocoCay via RCG</b> \u2014 world-class island, no capex'],w:['<b>No owned island</b>; identity is borrowed'],o:['Premium ship + premium island, cheaply'],t:['NCL\'s owned-island investment is a story Celebrity <b>can\'t claim</b>']},
+        pricing:{s:['<b>All Included</b> (drinks/wifi/tips) \u2014 clean value-premium'],w:['Higher entry point; not for budget'],o:['Bundle transparency as premium proof'],t:['NCL inclusive value competes at lower entry']},
+        itineraries:{s:['7-nt Caribbean from FL ports; CocoCay on select sailings'],w:['Fewer ships / departures; adult-skewed'],o:['Design-led premium itineraries'],t:['Breadth of NCL / Royal / Princess']},
+        onboard:{s:['<b>Culinary</b> rep; Eden & Magic Carpet design; The Retreat'],w:['No family thrills; quieter energy not for all'],o:['Own the foodie / design premium'],t:['NCL Haven + Indulge close part of the gap']},
+        brand:{s:['<b>Sharpest premium-modern</b> identity in mainstream-plus'],w:['Narrower appeal'],o:['Modern-luxury halo'],t:['Segment pressure from Virgin, NCL Haven']}},
+    idx:{overview:-15,islands:10,pricing:0,itineraries:10,onboard:-10,brand:-20},
+    take:{overview:'Celebrity owns "modern luxury" cleanly. NCL\'s play is <strong>"premium without pretense"</strong> \u2014 Haven + flexibility + a bigger island day.',islands:'NCL <strong>owns</strong> its island story; Celebrity <strong>rents</strong> one. Great Stirrup Cay is a brand asset \u2014 merchandise it hard.',pricing:'Celebrity\'s "All Included" is the <strong>clarity benchmark</strong>. NCL should match that legibility while keeping its lower price-entry edge.',itineraries:'NCL out-covers Celebrity on choice. Keep the <strong>newest-ship + flexibility</strong> advantage visible.',onboard:'Celebrity wins the quiet-premium guest. NCL wins the guest who wants premium <strong>and range</strong>.',brand:'Celebrity\'s brand discipline is the model. NCL\'s fragmentation is the exact gap <strong>MMGY closes</strong>.'}
   }
 };
+const LENSES=[['overview','Overview'],['islands','Private Islands'],['pricing','Pricing'],['itineraries','Itineraries'],['onboard','Onboard'],['brand','Brand']];
 
-// Challengers
-const FOES = {
-  royal:{
-    name:"Royal Caribbean", accent:"--royal", short:"Royal",
-    tags:{overview:"Scale · Perfect Day · best entertainment",islands:"Perfect Day at CocoCay · Island Collection",pricing:"Premium on newest ships · à-la-carte",itineraries:"Highest density · Miami + Orlando",onboard:"Icon-class thrills · 7 pools · shows",brand:"Family thrills · clearest identity"},
-    swot:{
-      overview:{s:["Market-leading <b>scale</b>; Icon & Star of the Seas","Perfect Day at CocoCay flywheel (~2M/yr)","Best-in-class entertainment"],w:["Nearly everything premium on-island is upcharge","Mega-ship density can feel theme-park","“Biggest” ≠ “most premium”"],o:["Extend Island Collection (Perfect Day Mexico ’27)"],t:["Premiumization ceiling","NCL/Celebrity/Virgin nibble segments"]},
-      islands:{s:["CocoCay ~2M/yr, ~6k/day; Thrill Waterpark; Hideaway","<b>Shared across Royal + Celebrity</b>","Royal Beach Club Paradise Island (Dec ’25)"],w:["Waterpark, cabanas, balloon = <b>paid add-ons</b>","Nickel-and-dime perception"],o:["Multi-region island network (Bahamas + Mexico ’27)"],t:["NCL’s <b>“open bar ashore”</b> contrast","Guest fatigue with upcharges"]},
-      pricing:{s:["Commands <b>premium</b> on newest ships","Strong yield management"],w:["À-la-carte inflates true trip cost","Drink/wifi/dining stack <b>50–100%</b> on headline"],o:["Upsell ecosystem is a revenue engine"],t:["NCL inclusive framing = ‘expensive once you add it up’"]},
-      itineraries:{s:["High sailing frequency on a tight core (fewest unique ports)","Every sailing hits CocoCay; Miami + Orlando"],w:["Itinerary sameness masked by <b>ship-as-destination</b>"],o:["Ship-as-destination reduces port dependence"],t:["Guests wanting real port time prefer rivals"]},
-      onboard:{s:["Icon-class thrills, 7 pools, entertainment breadth","Family gravity"],w:["Adults / quiet-seekers underserved vs Celebrity","Crowds"],o:["Own the family vacation"],t:["NCL Haven + Celebrity peel off higher-yield guests"]},
-      brand:{s:["Clearest identity in the set — <b>family thrills</b> + Perfect Day","Consistent for 50+ years"],w:["Premium perception capped"],o:["Reliable first-cruise pick"],t:["Premium-seekers trade up and out"]}
-    },
-    index:{overview:-35,islands:-45,pricing:25,itineraries:-20,onboard:-30,brand:-40},
-    take:{
-      overview:"Royal wins on scale; NCL wins by <strong>out-storytelling</strong> it on inclusive value and flexibility — not by trying to out-build it.",
-      islands:"Great Tides narrows the thrill gap. NCL’s ownable counter is <strong>“included,” not “bigger”</strong> — open bar ashore is the wedge Royal can’t match.",
-      pricing:"This is NCL’s best <strong>offensive</strong> lens. The ‘what a week actually costs’ comparison favors inclusive NCL once Royal’s add-ons stack up.",
-      itineraries:"Royal sells the ship. NCL can sell the ship <strong>and</strong> a differentiated island day plus real flexibility.",
-      onboard:"Don’t fight Royal on thrills. Win the <strong>flexible-plus-premium</strong> (Haven) guest Royal underserves.",
-      brand:"Royal’s brand is stable and singular. NCL’s fix isn’t a louder voice — it’s a <strong>consistent</strong> one."
-    }
-  },
-  msc:{
-    name:"MSC Cruises", accent:"--msc", short:"MSC",
-    tags:{overview:"Value · European flavor · Yacht Club",islands:"Ocean Cay Marine Reserve · eco angle",pricing:"Lowest headline · kids sail free",itineraries:"Miami/Orlando/NYC · two island days",onboard:"Yacht Club enclave · value dining",brand:"Value + European · low U.S. awareness"},
-    swot:{
-      overview:{s:["<b>Value leader</b>; kids-sail-free; European flavor","Yacht Club luxury enclave; MSC World America (’25)","Ocean Cay Marine Reserve"],w:["Thin <b>U.S. brand awareness</b>","Less differentiated for U.S. families","Service-consistency perceptions"],o:["Ocean Cay two-day itineraries; U.S. growth"],t:["Undifferentiated vs Royal/NCL onboard for U.S. mainstream"]},
-      islands:{s:["Ocean Cay: <b>reclaimed industrial site → marine reserve</b>","Some itineraries = <b>two full island days</b>","Lighthouse LED show"],w:["Less thrill infrastructure than CocoCay / Great Tides","Low U.S. awareness of the asset"],o:["Sustainability / eco positioning is distinctive"],t:["Thrill arms race (Great Tides, CocoCay) out-spends it"]},
-      pricing:{s:["<b>Lowest headline fares</b> (~$700, 7-nt); kids sail free","Aggressive value posture"],w:["Add-ons & perceived-value gaps; upsell to Yacht Club"],o:["Value-seeker capture in soft-demand market"],t:["Race-to-bottom margin risk"]},
-      itineraries:{s:["Miami + Port Canaveral + NYC","Two-island-day novelty; La Romana/Catalina new ’26"],w:["Similar core ports; European feel not for everyone"],o:["Novel routing (double Ocean Cay)"],t:["Sameness across the field"]},
-      onboard:{s:["Yacht Club enclave; solid value dining","Family Aventura zones"],w:["Entertainment / buzz below Royal & NCL for U.S. guests"],o:["Yacht Club as premium wedge"],t:["NCL Haven competes for the enclave guest"]},
-      brand:{s:["Clear <b>value + European</b> identity; global scale"],w:["Low U.S. familiarity & consideration"],o:["Room to grow U.S. mindshare"],t:["Boxed in by Royal/NCL awareness in the U.S."]}
-    },
-    index:{overview:5,islands:15,pricing:-20,itineraries:10,onboard:20,brand:15},
-    take:{
-      overview:"MSC pressures NCL <strong>from below on price</strong>. NCL must not chase the sticker — compete on included value and entertainment, where it leads.",
-      islands:"Great Tides gives NCL a thrill story MSC can’t match. MSC’s <strong>eco angle</strong> is the one thing to watch and out-narrate.",
-      pricing:"NCL loses the sticker war and <strong>shouldn’t fight it</strong>. Reframe ‘value = what’s included,’ where NCL wins.",
-      itineraries:"Match MSC’s routing novelty by dialing up the <strong>island day + flexibility</strong>, not by bolting on ports.",
-      onboard:"NCL’s entertainment and Haven <strong>out-punch</strong> MSC onboard. Press it.",
-      brand:"U.S. brand equity is an asset vs MSC. NCL’s real problem is <strong>above</strong> it (Royal, Celebrity), not below."
-    }
-  },
-  princess:{
-    name:"Princess Cruises", accent:"--princess", short:"Princess",
-    tags:{overview:"Premium couples · Medallion · Love Boat",islands:"Princess Cays · Celebration Key (Nov ’26)",pricing:"Premium · Plus/Premier bundles",itineraries:"All regions ’26 · More Ashore late stays",onboard:"Medallion tech · Sphere-class · wine",brand:"Love Boat equity · skews older"},
-    swot:{
-      overview:{s:["Premium-for-couples; <b>Love Boat</b> heritage","Medallion <b>frictionless tech</b>; Sun & Star Princess","All Caribbean regions ’26; Celebration Key access (Nov ’26)"],w:["Princess Cays <b>tenders</b> (no pier)","Older core fleet outside Sphere ships","Skews older demographic"],o:["Celebration Key upgrade; tech-led loyalty"],t:["NCL/Celebrity premium overlap; thinner family pull"]},
-      islands:{s:["Princess Cays BBQ + beach","<b>Celebration Key</b> (Grand Bahama) opens Nov ’26 — Carnival mega-destination"],w:["Princess Cays <b>tenders ashore</b> — slow, weather-exposed","Dated vs CocoCay / Great Stirrup"],o:["Celebration Key resets its island game overnight"],t:["Behind on owned-island thrills until CK scales"]},
-      pricing:{s:["Premium positioning; Plus / Premier bundles; loyalty OBC"],w:["Higher entry; value-seekers look elsewhere"],o:["Bundle clarity (Plus / Premier)"],t:["NCL inclusive framing competes on value-premium"]},
-      itineraries:{s:["<b>All Caribbean regions</b> ’26; 5 homeports, 11 ships, 23 islands","More Ashore late-night port stays"],w:["Longer, older-skewing itineraries less family-punchy"],o:["Region breadth + late stays = differentiated"],t:["NCL & Royal newer-ship pull"]},
-      onboard:{s:["<b>Medallion</b>: order-anywhere, keyless, locate party","Sphere-class Dome/Piazza; wine awards"],w:["Fewer thrills; older vibe"],o:["Tech as a loyalty moat"],t:["Younger / family guests prefer NCL & Royal energy"]},
-      brand:{s:["Iconic <b>Love Boat</b> equity; premium-couples clarity"],w:["Skews older; less youthful pull"],o:["Heritage + tech story"],t:["Cedes ‘flexible premium’ to younger-leaning rivals"]}
-    },
-    index:{overview:-5,islands:20,pricing:5,itineraries:8,onboard:-5,brand:-10},
-    take:{
-      overview:"Princess and NCL fight for the <strong>premium-curious</strong> guest. NCL’s edge is flexibility + thrill breadth; Princess’s is seamless service tech.",
-      islands:"NCL leads on island <strong>today</strong>. Celebration Key (Nov ’26) is the threat to pre-empt — this is a <strong>timing race</strong>, not a capability gap.",
-      pricing:"Both sell bundles. NCL can win the <strong>clarity</strong> contest — make ‘what’s included’ unmistakable before Princess does.",
-      itineraries:"NCL actually <strong>out-covers Princess</strong> on ports (42 vs 38) — breadth is NCL's. The real contest is Princess's late-night stays and service, not map coverage.",
-      onboard:"Medallion is a real friction-removal edge. NCL counters with <strong>energy, entertainment, and Haven</strong>.",
-      brand:"Princess’s brand is stable and clear. NCL’s opening is the <strong>‘flexible premium’</strong> lane Princess leaves to younger guests."
-    }
-  },
-  celebrity:{
-    name:"Celebrity Cruises", accent:"--celebrity", short:"Celebrity",
-    tags:{overview:"Modern luxury · The Retreat · All Included",islands:"Borrows CocoCay via RCG",pricing:"All Included fare · higher, transparent",itineraries:"7-nt premium · FL ports",onboard:"Culinary · Eden · Retreat · adults-calm",brand:"Sharpest premium-modern identity"},
-    swot:{
-      overview:{s:["<b>Cleanest premium identity</b>; culinary + design rep","The Retreat; All Included fare; Edge series incl. Xcel (’25)","Free ride on CocoCay via RCG"],w:["Limited family / thrill appeal (<b>no waterslides</b>)","No owned island identity; smaller scale"],o:["Premium modern-luxury growth; Retreat yield"],t:["NCL Haven competes for the premium enclave guest; Virgin adults-only"]},
-      islands:{s:["Gets <b>CocoCay via RCG</b> — world-class island, no capex","Pairs premium ship with premium island"],w:["<b>No owned island</b>; identity is borrowed"],o:["Premium ship + premium island, cheaply"],t:["NCL’s owned-island investment is a story Celebrity <b>can’t claim</b>"]},
-      pricing:{s:["<b>All Included</b> (drinks/wifi/tips) — clean value-premium","Higher base but transparent"],w:["Higher entry point; not for budget"],o:["Bundle transparency as premium proof"],t:["NCL inclusive value competes at lower entry"]},
-      itineraries:{s:["7-nt Caribbean from FL ports; premium-paced","CocoCay on select sailings"],w:["Fewer ships / departures than Royal & NCL; adult-skewed"],o:["Design-led premium itineraries"],t:["Breadth of NCL / Royal / Princess"]},
-      onboard:{s:["<b>Culinary</b> rep; Eden & Magic Carpet design; The Retreat","Adults-calm (Solariums); Michelin-chef partnerships"],w:["No family thrills; quieter energy not for all"],o:["Own the foodie / design premium"],t:["NCL Haven + Indulge close part of the gap"]},
-      brand:{s:["<b>Sharpest premium-modern</b> identity in mainstream-plus","Consistent"],w:["Narrower appeal"],o:["Modern-luxury halo"],t:["Segment pressure from Virgin, NCL Haven"]}
-    },
-    index:{overview:-15,islands:10,pricing:0,itineraries:10,onboard:-10,brand:-20},
-    take:{
-      overview:"Celebrity owns ‘modern luxury’ cleanly. NCL’s play is <strong>‘premium without pretense’</strong> — Haven + flexibility + a bigger island day.",
-      islands:"NCL <strong>owns</strong> its island story; Celebrity <strong>rents</strong> one. Great Stirrup Cay is a brand asset — merchandise it hard.",
-      pricing:"Celebrity’s ‘All Included’ is the <strong>clarity benchmark</strong>. NCL should match that legibility while keeping its lower price-entry edge.",
-      itineraries:"NCL out-covers Celebrity on choice. Keep the <strong>newest-ship + flexibility</strong> advantage visible.",
-      onboard:"Celebrity wins the quiet-premium guest. NCL wins the guest who wants premium <strong>and range</strong> — position Haven there.",
-      brand:"Celebrity’s brand discipline is the model. NCL’s fragmentation is the exact gap <strong>MMGY closes</strong>."
-    }
-  }
+const DEPLOY=[{"n":"Nassau","loc":"Bahamas","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Freeport","loc":"Bahamas","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Bimini","loc":"Bahamas","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":""}},{"n":"Grand Turk","loc":"Turks & Caicos","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Perfect Day at CocoCay","loc":"","tag":"Private Island","r":"east","p":{"ncl":"","royal":"WUS","princess":"","celebrity":"WUS","msc":""}},{"n":"Great Stirrup Cay","loc":"","tag":"Private Island","r":"east","p":{"ncl":"WUS","royal":"","princess":"","celebrity":"","msc":""}},{"n":"Ocean Cay MSC Reserve","loc":"","tag":"Private Island","r":"east","p":{"ncl":"","royal":"","princess":"","celebrity":"","msc":"WUS"}},{"n":"Half Moon Cay","loc":"","tag":"Shared","r":"east","p":{"ncl":"","royal":"","princess":"WS","celebrity":"","msc":""}},{"n":"Princess Cays","loc":"","tag":"Private Island","r":"east","p":{"ncl":"","royal":"","princess":"WS","celebrity":"","msc":""}},{"n":"San Juan","loc":"Puerto Rico","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"St. Thomas","loc":"USVI","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"St. Croix","loc":"USVI","tag":"","r":"east","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":""}},{"n":"Tortola (Road Town)","loc":"BVI","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Amber Cove","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"WUS","royal":"","princess":"WUS","celebrity":"","msc":""}},{"n":"Taino Bay (Puerto Plata)","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"La Romana","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"W","royal":"","princess":"W","celebrity":"W","msc":"W"}},{"n":"Saman\u00e1","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"W","royal":"","princess":"","celebrity":"","msc":""}},{"n":"Santo Domingo","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"","royal":"","princess":"","celebrity":"","msc":"W"}},{"n":"Cabo Rojo","loc":"Dominican Republic","tag":"","r":"east","p":{"ncl":"W","royal":"W","princess":"","celebrity":"","msc":"W"}},{"n":"Labadee","loc":"Haiti","tag":"Private Dest.","r":"east","p":{"ncl":"","royal":"WUS","princess":"","celebrity":"WUS","msc":""}},{"n":"George Town","loc":"Grand Cayman","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Falmouth","loc":"Jamaica","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Ocho Rios","loc":"Jamaica","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Montego Bay","loc":"Jamaica","tag":"","r":"west","p":{"ncl":"W","royal":"","princess":"W","celebrity":"","msc":"W"}},{"n":"Cozumel","loc":"Mexico","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Costa Maya","loc":"Mexico","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Progreso","loc":"Mexico","tag":"","r":"west","p":{"ncl":"","royal":"W","princess":"","celebrity":"","msc":""}},{"n":"Belize City","loc":"Belize","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Harvest Caye","loc":"Belize","tag":"Private Island","r":"west","p":{"ncl":"WUS","royal":"","princess":"","celebrity":"","msc":""}},{"n":"Roat\u00e1n","loc":"Honduras","tag":"","r":"west","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Santo Tom\u00e1s de Castilla","loc":"Guatemala","tag":"","r":"west","p":{"ncl":"W","royal":"","princess":"","celebrity":"","msc":""}},{"n":"Puerto Lim\u00f3n","loc":"Costa Rica","tag":"","r":"west","p":{"ncl":"WS","royal":"WS","princess":"WS","celebrity":"WS","msc":"WS"}},{"n":"Col\u00f3n","loc":"Panama","tag":"","r":"west","p":{"ncl":"WS","royal":"WS","princess":"WS","celebrity":"WS","msc":"WS"}},{"n":"Philipsburg","loc":"St. Maarten","tag":"","r":"south","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"St. John\u2019s","loc":"Antigua","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Basseterre","loc":"St. Kitts","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Castries","loc":"St. Lucia","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Roseau","loc":"Dominica","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"St. George\u2019s","loc":"Grenada","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Kingstown","loc":"St. Vincent","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Bridgetown","loc":"Barbados","tag":"","r":"south","p":{"ncl":"WS","royal":"WS","princess":"WS","celebrity":"WS","msc":"WS"}},{"n":"Fort-de-France","loc":"Martinique","tag":"","r":"south","p":{"ncl":"W","royal":"W","princess":"W","celebrity":"W","msc":"W"}},{"n":"Pointe-\u00e0-Pitre","loc":"Guadeloupe","tag":"","r":"south","p":{"ncl":"W","royal":"","princess":"W","celebrity":"W","msc":"W"}},{"n":"Oranjestad","loc":"Aruba","tag":"","r":"south","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Willemstad","loc":"Cura\u00e7ao","tag":"","r":"south","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Kralendijk","loc":"Bonaire","tag":"","r":"south","p":{"ncl":"WUS","royal":"WUS","princess":"WUS","celebrity":"WUS","msc":"WUS"}},{"n":"Port of Spain","loc":"Trinidad","tag":"","r":"south","p":{"ncl":"W","royal":"","princess":"W","celebrity":"W","msc":"W"}},{"n":"Cartagena","loc":"Colombia","tag":"","r":"south","p":{"ncl":"WS","royal":"WS","princess":"WS","celebrity":"WS","msc":"WS"}},{"n":"Santa Marta","loc":"Colombia","tag":"","r":"south","p":{"ncl":"W","royal":"","princess":"","celebrity":"W","msc":""}}];
+const RMETA={east:'Eastern Caribbean & Bahamas',west:'Western Caribbean & Panama',south:'Southern Caribbean'};
+const RORD=['east','west','south'];
+const SMAP={W:'Winter High',U:'Summer',S:'Shoulder'};
+const SSUB={W:'Dec \u2013 Apr',U:'May \u2013 Aug',S:'Sep \u2013 Nov'};
+
+const BRAND={
+  ncl:{plat:"It's Different Out Here",meta:"Arnold Worldwide \u00b7 2026 \u00b7 brand platform",claims:'Freedom & flexibility \u2014 the Freestyle heritage, now fronting the Caribbean escape',prod:'Strong',story:'Medium',align:58,col:C.ncl,
+    claim:['Now leads even on Great Stirrup Cay creative (recent uploads)','Freedom, flexibility, presence over ship size','"Escape to the Great Life" (Super Nice, 2025) as the island proof'],
+    deliver:['Freestyle flexibility \u2014 now the platform, not just a feature','Free at Sea inclusive value; Free at Sea Plus open bar ashore','The Haven; newest ships; owned island + Great Tides'],
+    verdict:'NCL is converging its Caribbean story under the freedom-and-flexibility banner. The claim now matches the product truth. The live questions: does the island and onboard experience deliver "different," and does the inclusion advantage (Free at Sea) get told as the proof?'},
+  royal:{plat:"It's Big Time",meta:'Partners+Napier \u00b7 2025',claims:'Big / go all in / embrace the world',prod:'Strong',story:'High',align:90,col:C.royal,
+    claim:['Biggest ships, most to do','"Go all in" \u2014 explicitly anti-escape','Embrace the world, don\'t retreat from it'],
+    deliver:['Icon & Star of the Seas','Perfect Day at CocoCay','Best-in-class entertainment & density'],
+    verdict:'The tightest claim-to-delivery fit in the set. The cost is that "big" cedes intimate, calm and premium. Don\'t try to out-claim Royal on scale; pick a different territory.'},
+  msc:{plat:'The Best Holiday Ever / Let\'s Holiday',meta:'McCann \u00b7 2026',claims:'European style + American comfort / value',prod:'Medium',story:'Low',align:48,col:C.msc,
+    claim:['"The magic of the unplanned"','European style, American comfort (Barrymore/Bloom)','Heavy "40% off, kids sail free" discount layer'],
+    deliver:['Lowest headline fares; Yacht Club enclave','Ocean Cay; MSC World America','Low U.S. brand awareness'],
+    verdict:'MSC\'s brand identity is at war with its own price promotion \u2014 aspirational celebrity ads alongside blaring discounts, muddying whether it\'s premium-European or cheap.'},
+  princess:{plat:'Love Boat by Hannah',meta:'Hannah Waddingham \u00b7 2024',claims:'Romance / nostalgia / connection',prod:'Medium',story:'Medium',align:62,col:C.princess,
+    claim:['"Princess is The Love Boat"','Romance, connection, heritage','MedallionClass personalization'],
+    deliver:['Medallion tech (a real connection edge)','Premium-for-couples positioning','Next-gen Sphere ships: Sun & Star Princess'],
+    verdict:'Emotionally ownable \u2014 nobody else can claim Love Boat \u2014 but executionally aging. Princess is running a nostalgia campaign at the exact moment it\'s launching its most modern ships ever.'},
+  celebrity:{plat:'Nothing Comes Close',meta:'2024',claims:'Modern luxury / elevated',prod:'Strong',story:'High',align:82,col:C.celebrity,
+    claim:['Modern luxury; "nothing comes close"','Small-ship intimacy + big-ship variety','Elevated design, culinary, service'],
+    deliver:['Edge-class design; culinary reputation','The Retreat; All Included fare','Borrows CocoCay via RCG (rented island)'],
+    verdict:'The cleanest premium identity in the set, and the claim holds up onboard. Its one seam: the island day it sells isn\'t its own \u2014 it rents Royal\'s CocoCay.'}
 };
+const TERR=[{t:'Big / go all in',w:'Royal Caribbean',c:C.royal},{t:'Modern luxury',w:'Celebrity',c:C.celebrity},{t:'Romance / nostalgia',w:'Princess',c:C.princess},{t:'European / value',w:'MSC',c:C.msc},{t:'Freedom / flexibility',w:'NCL \u00b7 claiming now',c:C.ncl}];
 
-const LENSES = [
-  ["overview","Overview"],["islands","Private Islands"],["pricing","Pricing"],
-  ["itineraries","Itineraries"],["onboard","Onboard"],["brand","Brand"]
-];
-
-// Illustrative pricing positions (0–100 across value→premium), lead 7-nt Caribbean, FL homeport
-const PRICE_BAND = [
-  {k:"msc",name:"MSC",pos:8,label:"~$700"},
-  {k:"princess",name:"Princess",pos:42,label:"~$850+"},
-  {k:"ncl",name:"NCL",pos:52,label:"~$800–950",home:true},
-  {k:"celebrity",name:"Celebrity",pos:64,label:"~$825 (All-Incl.)"},
-  {k:"royal",name:"Royal (Icon/Star)",pos:88,label:"~$1,000–1,300"}
-];
-
-/* ---------------- STATE + RENDER ---------------- */
-let foe = "royal", lens = "overview";
-
-const QUAD_META = [["s","Strengths","+"],["w","Weaknesses","–"],["o","Opportunities","↗"],["t","Threats","⚠"]];
-
-function renderSwot(el, data){
-  el.innerHTML = "";
-  QUAD_META.forEach(([k,label,glyph])=>{
-    const items = (data[k]||[]).map(x=>`<li>${x}</li>`).join("");
-    const d = document.createElement("div");
-    d.className = `quad ${k} fade`;
-    d.innerHTML = `<div class="quad-label"><span class="glyph">${glyph}</span>${label}</div><ul>${items}</ul>`;
-    el.appendChild(d);
-  });
-}
-
-function renderPriceBand(){
-  const scale = document.getElementById("pb-scale");
-  scale.innerHTML = "";
-  PRICE_BAND.forEach(p=>{
-    const m = document.createElement("div");
-    m.className = "pb-mark";
-    m.style.left = p.pos + "%";
-    const color = p.home ? "var(--home)" : (p.k==="royal"?"var(--royal)":p.k==="msc"?"var(--msc)":p.k==="princess"?"var(--princess)":"var(--celebrity)");
-    m.style.color = color;
-    m.innerHTML = `<span class="nm"${p.home?' style="text-shadow:0 0 10px var(--home-glow)"':''}>${p.name}</span><span class="pin"></span><span class="pr">${p.label}</span>`;
-    scale.appendChild(m);
-  });
-}
-
-function render(){
-  const F = FOES[foe];
-  document.documentElement.style.setProperty("--challenger", `var(${F.accent})`);
-
-  // labels
-  document.getElementById("foe-name").textContent = F.name;
-  document.getElementById("foe-tag").textContent = F.tags[lens];
-  document.getElementById("home-tag").textContent = HOME_TAGS[lens];
-  document.getElementById("ro-matchup").textContent = `NCL vs. ${F.name}`;
-  document.getElementById("ro-lens").textContent = LENSES.find(l=>l[0]===lens)[1];
-  document.getElementById("end-l").textContent = `${F.short} leads`;
-  document.getElementById("foe-badge").textContent = "Challenger";
-
-  // swots
-  renderSwot(document.getElementById("home-swot"), NCL[lens]);
-  renderSwot(document.getElementById("foe-swot"), F.swot[lens]);
-
-  // gauge
-  const idx = F.index[lens];               // -100..100  (+ = NCL advantage)
-  const pct = 50 + idx/2;                    // 0..100
-  const needle = document.getElementById("needle");
-  needle.style.left = pct + "%";
-  needle.style.borderColor = idx>=0 ? "var(--home)" : `var(${F.accent})`;
-  document.getElementById("ro-index").textContent = (idx>0?"+":"") + idx;
-  document.getElementById("ro-index").style.color = idx>=0 ? "var(--home)" : `var(${F.accent})`;
-  document.getElementById("ro-take").innerHTML = F.take[lens];
-
-  // pricing band visibility
-  document.getElementById("priceband").classList.toggle("show", lens==="pricing");
-
-  // pressed states
-  document.querySelectorAll("#foes .pill").forEach(b=>b.setAttribute("aria-pressed", b.dataset.foe===foe));
-  document.querySelectorAll("#lenses .pill").forEach(b=>b.setAttribute("aria-pressed", b.dataset.lens===lens));
-}
-
-/* ---------------- BUILD CONTROLS ---------------- */
-const foesEl = document.getElementById("foes");
-Object.entries(FOES).forEach(([k,v])=>{
-  const b = document.createElement("button");
-  b.className = "pill challenger"; b.dataset.foe = k; b.type="button";
-  b.innerHTML = `<span class="chip" style="background:var(${v.accent})"></span>${v.name}`;
-  b.addEventListener("click",()=>{foe=k;render()});
-  foesEl.appendChild(b);
-});
-const lensEl = document.getElementById("lenses");
-LENSES.forEach(([k,label])=>{
-  const b = document.createElement("button");
-  b.className = "pill"; b.dataset.lens = k; b.type="button";
-  b.innerHTML = `<span class="lensdot"></span>${label}`;
-  b.addEventListener("click",()=>{lens=k;render()});
-  lensEl.appendChild(b);
-});
-
-renderPriceBand();
-render();
-
-/* ============================================================
-   DEPLOYMENT ATLAS
-============================================================ */
-const LINES = {
-  ncl:      {name:"Norwegian", short:"NCL", color:"#0C88AA", home:true},
-  royal:    {name:"Royal Caribbean", short:"Royal", color:"#C68A14"},
-  princess: {name:"Princess", short:"Princess", color:"#8B5FC4"},
-  celebrity:{name:"Celebrity", short:"Celebrity", color:"#7C899B"},
-  msc:      {name:"MSC", short:"MSC", color:"#1E9E72"}
+const AXES={
+  'Value Architecture':{l:'Ala Carte Heavy',r:'Bundled Value',s:{ncl:6,royal:-7,msc:-8,celebrity:-3,princess:-1}},
+  'Vibe Dynamic':{l:'Quiet & Sophisticated',r:'Multi-Gen Thrills',s:{ncl:7,royal:9,msc:6,celebrity:-6,princess:-4}},
+  'Infrastructure':{l:'Public Infrastructure',r:'Private Destination',s:{ncl:8,royal:10,msc:7,celebrity:-5,princess:5}},
+  'Thrill Focus':{l:'Passive Beach',r:'Active Theme Park',s:{ncl:6,royal:10,msc:1,celebrity:2,princess:-6}},
+  'Schedule Style':{l:'Traditional Routine',r:'Freestyle Flexibility',s:{ncl:9,royal:-2,msc:1,celebrity:-5,princess:-8}},
+  'Demographic Focus':{l:'Gen X / Millennial Families',r:'Mature / Couples',s:{ncl:-6,royal:-9,msc:-5,celebrity:4,princess:8}}
 };
-const LCOLS = ["ncl","royal","princess","celebrity","msc"];
+const AK=Object.keys(AXES);
+const STAKES={'Value Architecture':"NCL owns the high-energy inclusive wedge. Royal Caribbean forces guests to constantly open their wallets via \u00e0-la-carte pricing; NCL\u2019s Free at Sea framework captures and closes the wallet at booking.",'Vibe Dynamic':"NCL and Royal both lead on multi-gen energy, but NCL\u2019s inclusive packaging means that energy comes without the constant upcharge. Celebrity and Princess cede the lively segment entirely.",'Infrastructure':"NCL is aggressively closing the private island gap. The Great Stirrup Cay pier expansion and Great Tides launch shift the island from a passive beach stop into a high-yield destination asset built to challenge Perfect Day at CocoCay.",'Thrill Focus':"Royal is the clear thrill leader, but NCL\u2019s Great Tides (Sep 2026) is the most significant thrill-gap closure in the Caribbean this year. Celebrity and Princess effectively exit the thrill competition.",'Schedule Style':"NCL\u2019s Freestyle DNA is genuinely unmatched \u2014 no competitor comes close. Celebrity and Princess force upscale travelers into traditional schedules; NCL provides the premium alternative.",'Demographic Focus':"NCL and Royal both lead with families \u2014 but NCL does so with more flexibility. Celebrity and Princess serve the mature/couples segment that NCL\u2019s The Haven can partly access at a premium."};
 
-const DEPLOY = [{"n": "Nassau", "loc": "Bahamas", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Freeport", "loc": "Bahamas", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Bimini", "loc": "Bahamas", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": ""}}, {"n": "Grand Turk", "loc": "Turks & Caicos", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Perfect Day at CocoCay", "loc": "", "tag": "Private Island", "r": "east", "p": {"ncl": "", "royal": "WUS", "princess": "", "celebrity": "WUS", "msc": ""}}, {"n": "Great Stirrup Cay", "loc": "", "tag": "Private Island", "r": "east", "p": {"ncl": "WUS", "royal": "", "princess": "", "celebrity": "", "msc": ""}}, {"n": "Ocean Cay MSC Reserve", "loc": "", "tag": "Private Island", "r": "east", "p": {"ncl": "", "royal": "", "princess": "", "celebrity": "", "msc": "WUS"}}, {"n": "Half Moon Cay", "loc": "", "tag": "Shared Private Island", "r": "east", "p": {"ncl": "", "royal": "", "princess": "WS", "celebrity": "", "msc": ""}}, {"n": "Princess Cays", "loc": "", "tag": "Private Island", "r": "east", "p": {"ncl": "", "royal": "", "princess": "WS", "celebrity": "", "msc": ""}}, {"n": "San Juan", "loc": "Puerto Rico", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "St. Thomas (Charlotte Amalie)", "loc": "USVI", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "St. Croix (Frederiksted)", "loc": "USVI", "tag": "", "r": "east", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": ""}}, {"n": "Tortola (Road Town)", "loc": "BVI", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Amber Cove", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "", "princess": "WUS", "celebrity": "", "msc": ""}}, {"n": "Taino Bay (Puerto Plata)", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "La Romana", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "W", "royal": "", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Samaná", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "W", "royal": "", "princess": "", "celebrity": "", "msc": ""}}, {"n": "Santo Domingo", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "", "royal": "", "princess": "", "celebrity": "", "msc": "W"}}, {"n": "Cabo Rojo", "loc": "Dominican Republic", "tag": "", "r": "east", "p": {"ncl": "W", "royal": "W", "princess": "", "celebrity": "", "msc": "W"}}, {"n": "Labadee", "loc": "Haiti", "tag": "Private Destination", "r": "east", "p": {"ncl": "", "royal": "WUS", "princess": "", "celebrity": "WUS", "msc": ""}}, {"n": "George Town", "loc": "Grand Cayman", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Falmouth", "loc": "Jamaica", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Ocho Rios", "loc": "Jamaica", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Montego Bay", "loc": "Jamaica", "tag": "", "r": "west", "p": {"ncl": "W", "royal": "", "princess": "W", "celebrity": "", "msc": "W"}}, {"n": "Cozumel", "loc": "Mexico", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Costa Maya", "loc": "Mexico", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Progreso", "loc": "Mexico", "tag": "", "r": "west", "p": {"ncl": "", "royal": "W", "princess": "", "celebrity": "", "msc": ""}}, {"n": "Belize City", "loc": "Belize", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Harvest Caye", "loc": "Belize", "tag": "Private Island", "r": "west", "p": {"ncl": "WUS", "royal": "", "princess": "", "celebrity": "", "msc": ""}}, {"n": "Roatán", "loc": "Honduras", "tag": "", "r": "west", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Santo Tomás de Castilla", "loc": "Guatemala", "tag": "", "r": "west", "p": {"ncl": "W", "royal": "", "princess": "", "celebrity": "", "msc": ""}}, {"n": "Puerto Limón", "loc": "Costa Rica", "tag": "", "r": "west", "p": {"ncl": "WS", "royal": "WS", "princess": "WS", "celebrity": "WS", "msc": "WS"}}, {"n": "Colón", "loc": "Panama", "tag": "", "r": "west", "p": {"ncl": "WS", "royal": "WS", "princess": "WS", "celebrity": "WS", "msc": "WS"}}, {"n": "Philipsburg", "loc": "St. Maarten", "tag": "", "r": "south", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "St. John's", "loc": "Antigua", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Basseterre", "loc": "St. Kitts", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Castries", "loc": "St. Lucia", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Roseau", "loc": "Dominica", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "St. George's", "loc": "Grenada", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Kingstown", "loc": "St. Vincent", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Bridgetown", "loc": "Barbados", "tag": "", "r": "south", "p": {"ncl": "WS", "royal": "WS", "princess": "WS", "celebrity": "WS", "msc": "WS"}}, {"n": "Fort-de-France", "loc": "Martinique", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "W", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Pointe-à-Pitre", "loc": "Guadeloupe", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Oranjestad", "loc": "Aruba", "tag": "", "r": "south", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Willemstad", "loc": "Curaçao", "tag": "", "r": "south", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Kralendijk", "loc": "Bonaire", "tag": "", "r": "south", "p": {"ncl": "WUS", "royal": "WUS", "princess": "WUS", "celebrity": "WUS", "msc": "WUS"}}, {"n": "Port of Spain / Scarborough", "loc": "Trinidad", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "", "princess": "W", "celebrity": "W", "msc": "W"}}, {"n": "Cartagena", "loc": "Colombia", "tag": "", "r": "south", "p": {"ncl": "WS", "royal": "WS", "princess": "WS", "celebrity": "WS", "msc": "WS"}}, {"n": "Santa Marta", "loc": "Colombia", "tag": "", "r": "south", "p": {"ncl": "W", "royal": "", "princess": "", "celebrity": "W", "msc": ""}}];
+/* ================================================================
+   STATE
+================================================================ */
+const S={tab:'swot',foe:'royal',lens:'overview',season:'W',region:'all',sel:'ncl',xAxis:'Value Architecture',yAxis:'Vibe Dynamic'};
+const SUBS={swot:'Side-by-side SWOT against the comp set. Select a challenger and lens to compare.',atlas:'Every Caribbean port each line calls, by season \u2014 49 ports across the five-line set.',brand:"Each line\u2019s brand platform against what its product actually delivers.",sandbox:'Plot any two competitive dimensions on a live perceptual map. Swap axes to explore.'};
 
-const REGIONMETA = {east:"Eastern Caribbean & Bahamas", west:"Western Caribbean & Panama", south:"Southern Caribbean"};
-const REGORD = ["east","west","south"];
-DEPLOY.forEach(p=>{ const c=LCOLS.filter(l=>p.p[l]); p.excl = c.length===1 ? c[0] : null; });
+/* ================================================================
+   HELPERS
+================================================================ */
+const g=id=>document.getElementById(id);
+const swatch=(col,sz=9)=>`<span style="width:${sz}px;height:${sz}px;border-radius:2px;background:${col};display:inline-block;flex-shrink:0"></span>`;
+function hexA(hex,a){const h=hex.replace('#','');return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${a})`;}
+function pill(label,active,onclick,color,subs,disabled){
+  const style=active&&color?`background:${color};border-color:${color};color:#fff`:active?'background:var(--ncl);border-color:var(--ncl);color:#fff':'';
+  return `<button class="cpill${active?' on':''}" style="${style}" onclick="${onclick}" ${disabled?'disabled':''}>
+    ${subs?`<div><div style="font-weight:500">${label}</div><div style="font-size:10px;opacity:.7">${subs}</div></div>`:label}
+  </button>`;
+}
+function quadCell(type,items){
+  const meta={s:{l:'Strengths',g:'+'},w:{l:'Weaknesses',g:'\u2013'},o:{l:'Opportunities',g:'\u2197'},t:{l:'Threats',g:'\u26a0'}};
+  const m=meta[type];
+  const lis=(items||[]).map(i=>`<li>${i}</li>`).join('');
+  return `<div class="quad-cell q${type}" style="min-height:90px"><div class="ql-row ql"><span class="gh">${m.g}</span>${m.l}</div><ul>${lis}</ul></div>`;
+}
 
-let aSeason="W", aRegion="all";
-function hexA(hex,a){ const h=hex.replace('#',''); return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${a})`; }
+/* ================================================================
+   RENDER: HEADER / TABS
+================================================================ */
+function renderHeader(){
+  const TABS=[['swot','Head-to-Head SWOT'],['atlas','Deployment Atlas'],['brand','Brand vs. Delivery'],['sandbox','Strategic Sandbox']];
+  g('tabnav').innerHTML=TABS.map(([id,lbl])=>`<button class="tabbt${S.tab===id?' on':''}" onclick="switchTab('${id}')"><span class="tab-dot"></span>${lbl}</button>`).join('');
+  g('sub').textContent=SUBS[S.tab];
+}
 
-function renderAtlas(){
-  let html = `<div class="ah port">Port</div>`;
-  LCOLS.forEach(l=> html += `<div class="ah lcol" style="color:${LINES[l].color}">${LINES[l].short}</div>`);
-  REGORD.forEach(rk=>{
-    if(aRegion!=="all" && aRegion!==rk) return;
-    const ports = DEPLOY.filter(p=>p.r===rk);
-    if(!ports.length) return;
-    html += `<div class="aregion">${REGIONMETA[rk]}</div>`;
+/* ================================================================
+   RENDER: SWOT
+================================================================ */
+function renderSwotSidebar(){
+  g('sidebar').innerHTML=`
+    <div class="lbl sec-head"><span style="color:var(--ncl)">01 </span>Challenger</div>
+    ${['royal','msc','princess','celebrity'].map(k=>{
+      const active=S.foe===k;
+      const style=active?`background:${C[k]};border-color:${C[k]};color:#fff`:'';
+      return `<button class="cpill${active?' on':''}" style="${style}" onclick="setFoe('${k}')"><span style="width:9px;height:9px;border-radius:2px;background:${active?'rgba(255,255,255,0.7)':C[k]};display:inline-block;flex-shrink:0"></span>${LN[k]}</button>`;
+    }).join('')}
+    <div class="lbl sec-head sdiv"><span style="color:var(--ncl)">02 </span>Strategic lens</div>
+    ${LENSES.map(([k,l])=>pill(l,S.lens===k,`setLens('${k}')`)).join('')}
+    <div class="sdiv"><p class="lbl" style="margin-bottom:4px">Note</p><p style="font-size:11px;color:var(--faint);line-height:1.6;margin-top:4px">Advantage index (\u2212100 to +100) is MMGY\u2019s directional read \u2014 a conversation-starter, not a scorecard.</p></div>`;
+}
+
+function renderSwotCanvas(){
+  const F=FOES[S.foe];const idx=F.idx[S.lens];const pct=50-idx/2;
+  const nc=idx>=0?C.ncl:C[S.foe];
+  const take=F.take[S.lens];
+  const PBAND=[{k:'msc',n:'MSC',pos:8,lbl:'~$700'},{k:'princess',n:'Princess',pos:40,lbl:'~$850+'},{k:'ncl',n:'NCL',pos:52,lbl:'~$800\u2013950',home:true},{k:'celebrity',n:'Celebrity',pos:65,lbl:'~$825 All-Incl.'},{k:'royal',n:'Royal (Icon)',pos:88,lbl:'~$1,000\u20131,300'}];
+  const pb=S.lens==='pricing'?`
+    <div class="card" style="padding:16px;margin-top:12px">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        <span class="lbl">Illustrative \u00b7 7-night Caribbean lead fare, Florida homeport</span>
+        <span style="font-size:10px;color:var(--faint)">Per person, double occ., cruise-only \u00b7 2026 \u00b7 directional</span>
+      </div>
+      <div class="pb-scale">${PBAND.map(p=>`<div class="pb-mark" style="left:${p.pos}%;color:${p.home?C.ncl:C[p.k]||'#999'}"><span style="font-family:'Space Mono',monospace;font-size:10px;font-weight:700;white-space:nowrap">${p.n}</span><span style="width:2px;height:12px;border-radius:1px;background:currentColor;display:inline-block"></span><span style="font-size:9px;color:var(--faint);white-space:nowrap">${p.lbl}</span></div>`).join('')}</div>
+      <div style="display:flex;justify-content:space-between" class="lbl" style="margin-top:4px"><span>\u25c4 Value floor</span><span>Mid band</span><span>Newest-ship premium \u25ba</span></div>
+    </div>`:'';
+  g('canvas').innerHTML=`
+    <div class="fadein">
+    <div class="card" style="padding:16px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        <span class="lbl">Head-to-Head \u00b7 <b style="color:var(--ink)">NCL vs. ${F.name}</b> \u00b7 ${LENSES.find(l=>l[0]===S.lens)?.[1]}</span>
+        <span class="lbl">Advantage index <b style="font-size:14px;color:${nc}">${idx>0?'+':''}${idx}</b></span>
+      </div>
+      <div class="gauge-wrap"><div class="gauge-parity"></div><div class="gauge-needle" style="left:${pct}%;border-color:${nc}"></div></div>
+      <div style="display:flex;justify-content:space-between" class="lbl"><span style="color:var(--ncl)">NCL leads</span><span style="color:${C[S.foe]}">${F.short} leads</span></div>
+      <div style="display:flex;gap:10px;align-items:flex-start;padding-top:12px;margin-top:12px;border-top:1px solid var(--bsoft)">
+        <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:var(--ncl);color:#fff;border-radius:6px;padding:3px 7px;flex-shrink:0;font-weight:700">So What</span>
+        <p style="font-size:13px;font-weight:500;color:var(--ink);line-height:1.6">${take}</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card" style="overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);border-left:4px solid ${C.ncl}">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:${C.ncl};background:rgba(12,136,170,.1);border:1px solid ${C.ncl};border-radius:6px;padding:2px 6px;font-weight:700">Home</span>
+          <div><div style="font-family:'Fraunces',serif;font-weight:600;font-size:15px">Norwegian Cruise Line</div><div style="font-size:11px;color:var(--faint);margin-top:2px">${HTAGS[S.lens]}</div></div>
+        </div>
+        <div class="quad-grid">${['s','w','o','t'].map(q=>quadCell(q,NCL_SW[S.lens][q])).join('')}</div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);border-left:4px solid ${C[S.foe]}">
+          <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:${C[S.foe]};background:${C[S.foe]}18;border:1px solid ${C[S.foe]};border-radius:6px;padding:2px 6px;font-weight:700">Challenger</span>
+          <div><div style="font-family:'Fraunces',serif;font-weight:600;font-size:15px">${F.name}</div><div style="font-size:11px;color:var(--faint);margin-top:2px">${F.tags[S.lens]}</div></div>
+        </div>
+        <div class="quad-grid">${['s','w','o','t'].map(q=>quadCell(q,F.sw[S.lens][q])).join('')}</div>
+      </div>
+    </div>
+    ${pb}
+    </div>`;
+}
+
+/* ================================================================
+   RENDER: ATLAS
+================================================================ */
+function renderAtlasSidebar(){
+  g('sidebar').innerHTML=`
+    <div class="lbl sec-head"><span style="color:var(--ncl)">01 </span>Season</div>
+    ${['W','U','S'].map(s=>pill(SMAP[s],S.season===s,`setSeason('${s}')`,null,SSUB[s],false)).join('')}
+    <div class="lbl sec-head sdiv"><span style="color:var(--ncl)">02 </span>Region</div>
+    ${[['all','All regions'],['east','Eastern & Bahamas'],['west','Western & Panama'],['south','Southern']].map(([k,l])=>pill(l,S.region===k,`setRegion('${k}')`)).join('')}
+    <div class="sdiv"><p class="lbl" style="margin-bottom:8px">Line colors</p>
+    ${LK.map(l=>`<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mist);margin-bottom:6px">${swatch(C[l],10)}${LN[l]}</div>`).join('')}</div>`;
+}
+
+function renderAtlasCanvas(){
+  const ap=DEPLOY.filter(p=>(S.region==='all'||p.r===S.region));
+  const nclN=ap.filter(p=>p.p.ncl.includes(S.season)).length;
+  const exN=ap.filter(p=>{const cl=LK.filter(l=>p.p[l].includes(S.season));return cl.length===1&&cl[0]==='ncl';}).length;
+
+  let matrix=`<div style="display:grid;grid-template-columns:minmax(170px,1.5fr) repeat(5,minmax(52px,1fr));gap:4px;padding:12px;min-width:540px">
+    <div class="lbl" style="padding-bottom:8px;position:sticky;top:0;background:#fff;z-index:2">Port</div>
+    ${LK.map(l=>`<div class="lbl" style="text-align:center;font-weight:700;color:${C[l]};padding-bottom:8px;position:sticky;top:0;background:#fff;z-index:2">${LS[l]}</div>`).join('')}`;
+
+  RORD.filter(rk=>S.region==='all'||rk===S.region).forEach(rk=>{
+    const ports=ap.filter(p=>p.r===rk);
+    if(!ports.length)return;
+    matrix+=`<div style="grid-column:1/-1;color:var(--ncl);font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;padding-top:12px;padding-bottom:4px;border-top:1px solid var(--bsoft);margin-top:4px">${RMETA[rk]}</div>`;
     ports.forEach(p=>{
-      const ex = p.excl ? `<span class="aexcl" style="color:${LINES[p.excl].color}">★ ${LINES[p.excl].short} only</span>` : "";
-      const tag = p.tag ? `<span class="atag">${p.tag}</span>` : "";
-      html += `<div class="acell portname"><div class="pn">${p.n}</div><div class="pl">${p.loc}${tag}</div>${ex}</div>`;
-      LCOLS.forEach(l=>{
-        const s=p.p[l]; const st = !s ? "none" : (s.includes(aSeason) ? "on" : "off");
-        const bg = st==="on" ? LINES[l].color : st==="off" ? hexA(LINES[l].color,.24) : "#E7EAEE";
-        html += `<div class="acell dc" style="background:${bg}" title="${p.n} · ${LINES[l].name}"></div>`;
+      const callers=LK.filter(l=>p.p[l].includes(S.season));
+      const excl=callers.length===1?callers[0]:null;
+      matrix+=`<div style="padding:5px 6px 5px 0">
+        <div style="font-weight:600;font-size:12px;color:var(--ink);line-height:1.3">${p.n}</div>
+        <div style="font-size:10px;color:var(--faint);margin-top:2px">${p.loc}${p.tag?`<span style="border:1px solid var(--border);border-radius:3px;padding:0 4px;font-size:8px;margin-left:4px;color:var(--mist)">${p.tag}</span>`:''}</div>
+        ${excl?`<div style="font-family:'Space Mono',monospace;font-size:8px;font-weight:700;color:${C[excl]};margin-top:2px">&#9733; ${LS[excl]} only</div>`:''}
+      </div>`;
+      LK.forEach(l=>{
+        const s=p.p[l];
+        const st=!s?'none':s.includes(S.season)?'on':'off';
+        const bg=st==='on'?C[l]:st==='off'?hexA(C[l],.18):'#EFF4F9';
+        matrix+=`<div class="atlas-cell" style="background:${bg};align-self:center"></div>`;
       });
     });
   });
-  document.getElementById("atlas").innerHTML = html;
-  renderStats();
-  document.querySelectorAll("#atlas-seasons .seasonbtn").forEach(b=>b.setAttribute("aria-pressed", b.dataset.s===aSeason));
-  document.querySelectorAll("#atlas-regions .pill").forEach(b=>b.setAttribute("aria-pressed", b.dataset.r===aRegion));
+  matrix+='</div>';
+
+  g('canvas').innerHTML=`
+    <div class="fadein">
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <div class="card" style="padding:10px 14px;min-width:110px"><div class="lbl" style="margin-bottom:6px">Total ports</div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--ink)">${ap.length}</div></div>
+      <div class="card" style="padding:10px 14px;min-width:130px"><div class="lbl" style="margin-bottom:6px">NCL sails this season</div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600"><span style="color:var(--ncl)">${nclN}</span><span style="font-size:12px;font-weight:400;color:var(--mist);margin-left:4px">of ${ap.length}</span></div></div>
+      <div class="card" style="padding:10px 14px;min-width:130px;border-color:${C.ncl};box-shadow:0 0 0 1px ${C.ncl}22"><div class="lbl" style="margin-bottom:6px">NCL-exclusive</div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--ncl)">${exN}</div></div>
+    </div>
+    <div class="card" style="overflow:auto;max-height:calc(100vh - 270px)">${matrix}</div>
+    <div style="display:flex;gap:14px;margin-top:8px;font-size:11px;color:var(--faint);flex-wrap:wrap">
+      <span style="display:flex;align-items:center;gap:6px">${swatch(C.ncl,12)}Sails this season</span>
+      <span style="display:flex;align-items:center;gap:6px">${swatch(hexA(C.ncl,.4),12)}Other season</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:2px;background:#EFF4F9;border:1px solid var(--border);display:inline-block"></span>No call</span>
+    </div>
+    </div>`;
 }
 
-function renderStats(){
-  const ports = DEPLOY.filter(p=> aRegion==="all" || aRegion===p.r);
-  const inView = ports.filter(p=> LCOLS.some(l=>p.p[l].includes(aSeason)));
-  const nclN = inView.filter(p=> p.p.ncl.includes(aSeason)).length;
-  const excl = inView.filter(p=> p.excl==="ncl" && p.p.ncl.includes(aSeason)).length;
-  document.getElementById("atlas-stats").innerHTML =
-    `<div class="statcard"><div class="sc-k">Ports in view</div><div class="sc-v">${inView.length}</div></div>`+
-    `<div class="statcard"><div class="sc-k">NCL sails</div><div class="sc-v"><b style="color:var(--home)">${nclN}</b> <span>of ${inView.length}</span></div></div>`+
-    `<div class="statcard hl"><div class="sc-k">NCL-exclusive ports</div><div class="sc-v" style="color:var(--home)">${excl}</div></div>`;
+/* ================================================================
+   RENDER: BRAND
+================================================================ */
+function renderBrandSidebar(){
+  g('sidebar').innerHTML=`
+    <div class="lbl sec-head"><span style="color:var(--ncl)">01 </span>Select line</div>
+    ${LK.map(k=>`<button class="cpill${S.sel===k?' on':''}" style="${S.sel===k?`background:${C[k]};border-color:${C[k]};color:#fff`:''}" onclick="setSel('${k}')"><span style="width:9px;height:9px;border-radius:2px;background:${C[k]};display:inline-block;flex-shrink:0"></span>${LN[k]}</button>`).join('')}
+    <div class="sdiv"><p class="lbl" style="margin-bottom:8px">Territory ownership</p>
+    ${TERR.map(t=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bsoft)"><span style="font-size:12px;font-weight:500;color:var(--ink)">${t.t}</span><span style="display:flex;align-items:center;gap:6px;font-size:10px;color:var(--faint);font-family:'Space Mono',monospace">${swatch(t.c,7)} ${t.w}</span></div>`).join('')}
+    <div style="margin-top:12px;border-radius:12px;padding:12px;border:1px solid ${C.ncl};background:rgba(12,136,170,.06)">
+      <div class="lbl" style="color:var(--ncl);margin-bottom:6px">Still open \u00b7 NCL\u2019s wedge</div>
+      <div style="font-family:'Fraunces',serif;font-weight:600;font-size:13px;margin-bottom:4px;color:var(--ink)">Generous inclusion, fused with freedom</div>
+      <p style="font-size:11px;color:var(--mist);line-height:1.6">NCL now leads on freedom & flexibility. Still unclaimed: \u201cpremium without pretense, all included\u201d \u2014 Free at Sea, open bar ashore via Plus. Secondary flags: solo travelers, flexible multigenerational.</p>
+    </div></div>`;
 }
 
-const asRow=document.getElementById("atlas-seasons");
-[["W","Winter High","Dec – Apr"],["U","Summer","May – Aug"],["S","Shoulder","Sep – Nov"]].forEach(([k,t,sub])=>{
-  const b=document.createElement("button"); b.className="seasonbtn"; b.dataset.s=k; b.type="button";
-  b.innerHTML=`${t}<span class="sb-sub">${sub}</span>`;
-  b.addEventListener("click",()=>{aSeason=k;renderAtlas();});
-  asRow.appendChild(b);
-});
-const arRow=document.getElementById("atlas-regions");
-[["all","All regions"],["east","Eastern & Bahamas"],["west","Western & Panama"],["south","Southern"]].forEach(([k,t])=>{
-  const b=document.createElement("button"); b.className="pill"; b.dataset.r=k; b.type="button"; b.textContent=t;
-  b.addEventListener("click",()=>{aRegion=k;renderAtlas();});
-  arRow.appendChild(b);
-});
-renderAtlas();
-
-/* ============================================================
-   BRAND vs DELIVERY
-============================================================ */
-const BRAND = {
-  ncl:{ color:"#0C88AA",
-    platform:"It's Different Out Here", meta:"Arnold Worldwide · 2026 · brand platform",
-    claims:"Freedom & flexibility — the Freestyle heritage, now fronting the Caribbean escape",
-    prod:"Strong", story:"Medium", align:58,
-    claim:["Now leads even on Great Stirrup Cay creative (recent uploads)","Freedom, flexibility, presence over ship size","Caribbean campaign “Escape to the Great Life” (Super Nice) as the island proof"],
-    deliver:["Freestyle flexibility — now the platform, not just a feature","Free at Sea inclusive value; open bar ashore","The Haven; newest ships; owned island + Great Tides"],
-    verdict:"NCL is converging its Caribbean story under the freedom-and-flexibility banner — closing the coherence gap that used to define it. The claim now matches the product truth. The live questions: does the island and onboard experience deliver “different,” and does the inclusion advantage (open bar ashore, Free at Sea) get told as the proof?" },
-  royal:{ color:"#C68A14",
-    platform:"It's Big Time", meta:"Partners+Napier · 2025",
-    claims:"Big / go all in / embrace the world",
-    prod:"Strong", story:"High", align:90,
-    claim:["Biggest ships, most to do","“Go all in” — explicitly anti-escape","Embrace the world, don't retreat from it"],
-    deliver:["Icon & Star of the Seas","Perfect Day at CocoCay","Best-in-class entertainment & density"],
-    verdict:"The tightest claim-to-delivery fit in the set — the ads and the product agree almost perfectly. The cost is that “big” cedes intimate, calm and premium. Don't try to out-claim Royal on scale; pick a different territory." },
-  msc:{ color:"#1E9E72",
-    platform:"The Best Holiday Ever / Let's Holiday", meta:"McCann · 2026",
-    claims:"European style + American comfort / value",
-    prod:"Medium", story:"Low", align:48,
-    claim:["“The magic of the unplanned”","European style, American comfort (Barrymore/Bloom)","Heavy “40% off, kids sail free” discount layer"],
-    deliver:["Lowest headline fares; Yacht Club enclave","Ocean Cay; MSC World America","Low U.S. brand awareness"],
-    verdict:"MSC's brand identity is at war with its own price promotion — aspirational celebrity ads running alongside blaring discounts, muddying whether it's premium-European or cheap. Its European wedge is genuinely distinctive but under-told; a threat only if it focuses." },
-  princess:{ color:"#8B5FC4",
-    platform:"Love Boat by Hannah", meta:"Hannah Waddingham · 2024",
-    claims:"Romance / nostalgia / connection",
-    prod:"Medium", story:"Medium", align:62,
-    claim:["“Princess is The Love Boat”","Romance, connection, heritage","MedallionClass personalization"],
-    deliver:["Medallion tech (a real connection edge)","Premium-for-couples positioning","Next-gen Sphere ships: Sun & Star Princess"],
-    verdict:"Emotionally ownable — nobody else can claim Love Boat — but executionally aging. Princess is running a nostalgia campaign at the exact moment it's launching its most modern ships ever, underselling the product and skewing the brand older when it needs younger prospects." },
-  celebrity:{ color:"#7C899B",
-    platform:"Nothing Comes Close", meta:"2024",
-    claims:"Modern luxury / elevated",
-    prod:"Strong", story:"High", align:82,
-    claim:["Modern luxury; “nothing comes close”","Small-ship intimacy + big-ship variety","Elevated design, culinary, service"],
-    deliver:["Edge-class design; culinary reputation","The Retreat; All Included fare","Borrows CocoCay via RCG (rented island)"],
-    verdict:"The cleanest premium identity in the set, and the claim holds up onboard. Its one seam: the island day it sells isn't its own — it rents Royal's CocoCay. Strong, disciplined, narrow." }
-};
-const BORDER = ["ncl","royal","msc","princess","celebrity"];
-const TERRITORIES = [
-  {terr:"Big / go all in", who:"Royal Caribbean", c:"#C68A14"},
-  {terr:"Modern luxury", who:"Celebrity", c:"#7C899B"},
-  {terr:"Romance / nostalgia", who:"Princess", c:"#8B5FC4"},
-  {terr:"European / value", who:"MSC", c:"#1E9E72"},
-  {terr:"Freedom / flexibility", who:"NCL · claiming now", c:"#0C88AA"}
-];
-
-document.getElementById("tboard").innerHTML = TERRITORIES.map(t=>
-  `<div class="trow"><span class="terr">${t.terr}</span><span class="owner"><span class="sw" style="background:${t.c}"></span>${t.who}</span></div>`).join("");
-
-let selBrand = "ncl";
-const bsel = document.getElementById("brandselect");
-BORDER.forEach(k=>{
-  const b=document.createElement("button");
-  b.className="pill bpill"; b.dataset.brand=k; b.type="button";
-  b.style.setProperty("--c", BRAND[k].color);
-  b.innerHTML = `<span class="chip" style="background:${BRAND[k].color}"></span>${LINES[k].name}`;
-  b.addEventListener("click",()=>{selBrand=k;renderBrand();});
-  bsel.appendChild(b);
-});
-
-function renderBrand(){
-  const d = BRAND[selBrand];
-  document.getElementById("bc-platform").textContent = d.platform;
-  document.getElementById("bc-meta").textContent = d.meta;
-  document.getElementById("bc-claims").textContent = d.claims;
-  document.getElementById("bc-claimlist").innerHTML = d.claim.map(x=>`<li>${x}</li>`).join("");
-  document.getElementById("bc-deliverlist").innerHTML = d.deliver.map(x=>`<li>${x}</li>`).join("");
-  document.getElementById("bc-verdict").textContent = d.verdict;
-  document.getElementById("bc-prod").textContent = d.prod;
-  document.getElementById("bc-story").textContent = d.story;
-  const n = document.getElementById("b-needle");
-  n.style.left = d.align + "%";
-  n.style.borderColor = d.color;
-  const sc = document.getElementById("b-score");
-  sc.textContent = d.align; sc.style.color = d.color;
-  document.querySelectorAll("#brandselect .bpill").forEach(b=>b.setAttribute("aria-pressed", b.dataset.brand===selBrand));
+function renderBrandCanvas(){
+  const d=BRAND[S.sel];
+  g('canvas').innerHTML=`
+    <div class="fadein">
+    <div class="card" style="padding:20px">
+      <div style="border-bottom:1px solid var(--bsoft);padding-bottom:14px;margin-bottom:14px">
+        <div style="font-family:'Fraunces',serif;font-weight:600;font-size:22px;color:${d.col};line-height:1.1;margin-bottom:4px">${d.plat}</div>
+        <div class="lbl" style="margin-bottom:8px">${d.meta}</div>
+        <div style="font-size:13px;color:var(--ink)"><span class="lbl" style="margin-right:8px">Claims to own</span>${d.claims}</div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <span class="lbl">Story\u2013product alignment</span>
+          <span class="lbl">Alignment&nbsp;<b style="font-size:14px;color:${d.col}">${d.align}</b></span>
+        </div>
+        <div class="align-wrap"><div class="align-needle" style="left:${d.align}%;border-color:${d.col}"></div></div>
+        <div style="display:flex;justify-content:space-between" class="lbl"><span>Claim \u2260 delivery</span><span>Claim = delivery</span></div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-size:11.5px;color:var(--mist);border:1px solid var(--border);border-radius:8px;padding:5px 10px">Product truth <b style="color:var(--ink)">${d.prod}</b></span>
+          <span style="font-size:11.5px;color:var(--mist);border:1px solid var(--border);border-radius:8px;padding:5px 10px">Story coherence <b style="color:var(--ink)">${d.story}</b></span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bsoft);border-radius:12px;overflow:hidden;margin-bottom:14px">
+        <div style="background:#fff;padding:14px">
+          <div class="lbl" style="color:#2E7BC4;margin-bottom:8px">The Claim \u00b7 Marketing</div>
+          <ul style="list-style:none">${d.claim.map(i=>`<li style="font-size:12px;color:#2A6098;padding-left:12px;position:relative;margin-bottom:6px;line-height:1.4"><span style="position:absolute;left:0;top:6px;width:5px;height:5px;border-radius:50%;background:#2E7BC4;opacity:.4;display:inline-block"></span>${i}</li>`).join('')}</ul>
+        </div>
+        <div style="background:#fff;padding:14px">
+          <div class="lbl" style="color:#0F9A85;margin-bottom:8px">The Delivery \u00b7 Product</div>
+          <ul style="list-style:none">${d.deliver.map(i=>`<li style="font-size:12px;color:#0F6B5E;padding-left:12px;position:relative;margin-bottom:6px;line-height:1.4"><span style="position:absolute;left:0;top:6px;width:5px;height:5px;border-radius:50%;background:#0F9A85;opacity:.4;display:inline-block"></span>${i}</li>`).join('')}</ul>
+        </div>
+      </div>
+      <div style="border-radius:12px;padding:14px;border:1px solid var(--border);border-left:3px solid ${d.col}">
+        <div class="lbl" style="margin-bottom:6px">Verdict</div>
+        <p style="font-size:13px;color:var(--ink);line-height:1.6">${d.verdict}</p>
+      </div>
+    </div>
+    </div>`;
 }
-renderBrand();
 
-/* ============================================================
-   VIEW TABS
-============================================================ */
-const HERO = {
-  swot:"A side-by-side SWOT of Norwegian Cruise Line against Royal Caribbean, MSC, Princess, and Celebrity across five factors: private islands, pricing, itineraries, onboard, and brand. Select a competitor and a lens to compare.",
-  map:"Every Caribbean port each line calls, by season — 49 ports across the five-line set. Solid means it sails there in the selected season; faded means another season. Filter by region to see coverage, overlap, and where NCL stands alone.",
-  brand:"Each line's brand platform and how well its marketing claim matches its actual product — with the positioning territory Norwegian can still own. Select a line to compare claim against delivery."
-};
-function setView(v){
-  document.querySelectorAll(".view").forEach(s=>{ s.hidden = s.id!=="view-"+v; });
-  document.querySelectorAll(".viewtab").forEach(b=>b.setAttribute("aria-pressed", b.dataset.view===v));
-  document.getElementById("hero-sub").textContent = HERO[v];
+/* ================================================================
+   RENDER: SANDBOX
+================================================================ */
+function renderSandboxSidebar(){
+  g('sidebar').innerHTML=`
+    <div class="lbl sec-head"><span style="color:var(--ncl)">01 </span>Horizontal (X) axis</div>
+    ${AK.map(k=>`<button class="cpill${S.xAxis===k?' on':''}" onclick="setXAxis('${k}')">${k}</button>`).join('')}
+    <div class="lbl sec-head sdiv"><span style="color:var(--ncl)">02 </span>Vertical (Y) axis</div>
+    ${AK.map(k=>`<button class="cpill${S.yAxis===k?' on':''}" ${S.xAxis===k?'disabled':''} onclick="setYAxis('${k}')">${k}</button>`).join('')}
+    </div>`;
 }
-document.querySelectorAll(".viewtab").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
-setView("swot");
+
+function getQuadrantNames(xAxis,yAxis){
+  const xd=AXES[xAxis], yd=AXES[yAxis];
+  // Each corner = xEndLabel|yEndLabel, looked up directly
+  // tr = xd.r | yd.r, tl = xd.l | yd.r, br = xd.r | yd.l, bl = xd.l | yd.l
+  const NAMED={
+    'Bundled Value|Multi-Gen Thrills':               'All-In Family Fun',
+    'Ala Carte Heavy|Multi-Gen Thrills':             'Pay-to-Play Thrill Seekers',
+    'Bundled Value|Quiet & Sophisticated':           'Quiet Luxury Included',
+    'Ala Carte Heavy|Quiet & Sophisticated':         'Premium Unbundled',
+    'Bundled Value|Private Destination':             'Owned Island, All-In',
+    'Ala Carte Heavy|Private Destination':           'Premium Private, Pay Per Experience',
+    'Bundled Value|Public Infrastructure':           'Inclusive Port Hopper',
+    'Ala Carte Heavy|Public Infrastructure':         'Traditional Nickel-and-Dime',
+    'Bundled Value|Active Theme Park':               'Adventure Included',
+    'Ala Carte Heavy|Active Theme Park':             'Thrill Seeker, Open Wallet',
+    'Bundled Value|Passive Beach':                   'Relaxation All-In',
+    'Ala Carte Heavy|Passive Beach':                 'Beach Day, Pay As You Go',
+    'Bundled Value|Freestyle Flexibility':           'Flexible & Fully Loaded',
+    'Ala Carte Heavy|Freestyle Flexibility':         'Free to Roam, Free to Spend',
+    'Bundled Value|Traditional Routine':             'Structured but Inclusive',
+    'Ala Carte Heavy|Traditional Routine':           'Regimented & Metered',
+    'Bundled Value|Mature / Couples':                'Couples Retreat, Nothing Extra',
+    'Ala Carte Heavy|Mature / Couples':              'Premium Couples, Curated Spend',
+    'Bundled Value|Gen X / Millennial Families':     'Family Value Play',
+    'Ala Carte Heavy|Gen X / Millennial Families':   'Family Fun, Running Tab',
+    'Multi-Gen Thrills|Private Destination':         'Theme Park Island',
+    'Quiet & Sophisticated|Private Destination':     'Secluded Sanctuary',
+    'Multi-Gen Thrills|Public Infrastructure':       'Port Day Party',
+    'Quiet & Sophisticated|Public Infrastructure':   'Quiet Port Explorer',
+    'Multi-Gen Thrills|Active Theme Park':           'Adrenaline Destination',
+    'Quiet & Sophisticated|Active Theme Park':       'Refined Adventure',
+    'Multi-Gen Thrills|Passive Beach':               'Lively but Laid Back',
+    'Quiet & Sophisticated|Passive Beach':           'Calm & Collected',
+    'Multi-Gen Thrills|Freestyle Flexibility':       'Spontaneous Energy',
+    'Quiet & Sophisticated|Freestyle Flexibility':   'Elegant Freedom',
+    'Multi-Gen Thrills|Traditional Routine':         'Scheduled Excitement',
+    'Quiet & Sophisticated|Traditional Routine':     'Classic Refinement',
+    'Multi-Gen Thrills|Mature / Couples':            'Adventurous Couples',
+    'Quiet & Sophisticated|Mature / Couples':        'Romantic Escape',
+    'Multi-Gen Thrills|Gen X / Millennial Families': 'Family Thrill Factory',
+    'Quiet & Sophisticated|Gen X / Millennial Families':'Upscale Family',
+    'Private Destination|Active Theme Park':         'Owned Thrill Island',
+    'Public Infrastructure|Active Theme Park':       'Port Day Adventure',
+    'Private Destination|Passive Beach':             'Private Beach Retreat',
+    'Public Infrastructure|Passive Beach':           'Scenic Port Call',
+    'Private Destination|Freestyle Flexibility':     'Your Island, Your Way',
+    'Public Infrastructure|Freestyle Flexibility':   'Freestyle Port Explorer',
+    'Private Destination|Traditional Routine':       'Scheduled Island Day',
+    'Public Infrastructure|Traditional Routine':     'Classic Itinerary',
+    'Private Destination|Mature / Couples':          "Couples' Private Escape",
+    'Public Infrastructure|Mature / Couples':        'Sophisticated Port Connoisseurs',
+    'Private Destination|Gen X / Millennial Families':   'Family Island HQ',
+    'Public Infrastructure|Gen X / Millennial Families': 'Family Port Explorers',
+    'Active Theme Park|Freestyle Flexibility':       'Go Hard, Go Free',
+    'Passive Beach|Freestyle Flexibility':           'Drift & Discover',
+    'Active Theme Park|Traditional Routine':         'Scheduled Thrills',
+    'Passive Beach|Traditional Routine':             'Predictable Relaxation',
+    'Active Theme Park|Mature / Couples':            'Adventurous Couples',
+    'Passive Beach|Mature / Couples':                'Romantic Slow Travel',
+    'Active Theme Park|Gen X / Millennial Families': 'Family Adventure Mode',
+    'Passive Beach|Gen X / Millennial Families':     'Easy Family Vacation',
+    'Freestyle Flexibility|Mature / Couples':        'Spontaneous Romance',
+    'Traditional Routine|Mature / Couples':          'Classic Couples Getaway',
+    'Freestyle Flexibility|Gen X / Millennial Families': 'Family, No Rules',
+    'Traditional Routine|Gen X / Millennial Families':   'Structured Family Holiday',
+  };
+  const lk=(x,y)=>NAMED[`${x}|${y}`]||NAMED[`${y}|${x}`]||'';
+  return {
+    tr: lk(xd.r, yd.r),
+    tl: lk(xd.l, yd.r),
+    br: lk(xd.r, yd.l),
+    bl: lk(xd.l, yd.l),
+  };
+}
+
+function buildSandboxMap(){
+  const xd=AXES[S.xAxis],yd=AXES[S.yAxis];
+  const toL=s=>50+s*4,toT=s=>50-s*4;
+  // SVG rings+grid — slightly more visible
+  const rings='';
+  const gv=[-8,-6,-4,-2,2,4,6,8].map(v=>`<line x1="${toL(v)}" y1="3" x2="${toL(v)}" y2="97" stroke="rgba(255,255,255,0.05)" stroke-width="0.2"/>`).join('');
+  const gh=[-8,-6,-4,-2,2,4,6,8].map(v=>`<line x1="3" y1="${toT(v)}" x2="97" y2="${toT(v)}" stroke="rgba(255,255,255,0.05)" stroke-width="0.2"/>`).join('');
+  // Axis label pills along center lines
+  const axPills=`
+    <div id="ax-xl" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.1em;background:#fff;border-radius:7px;padding:6px 12px;pointer-events:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:25">\u2190 ${xd.l.toUpperCase()}</div>
+    <div id="ax-xr" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.1em;background:#fff;border-radius:7px;padding:6px 12px;pointer-events:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:25">${xd.r.toUpperCase()} \u2192</div>
+    <div id="ax-yt" style="position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.1em;background:#fff;border-radius:7px;padding:6px 12px;pointer-events:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:25">\u2191 ${yd.r.toUpperCase()}</div>
+    <div id="ax-yb" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.1em;background:#fff;border-radius:7px;padding:6px 12px;pointer-events:none;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.2);z-index:25">\u2193 ${yd.l.toUpperCase()}</div>`;
+  // Determine NCL quadrant (tl/tr/bl/br)
+  const nclX=xd.s.ncl,nclY=yd.s.ncl;
+  const nclQ=(nclY>=0?'t':'b')+(nclX>=0?'r':'l');
+  // Build quadrant name labels + NCL highlight
+  const qNames=getQuadrantNames(S.xAxis,S.yAxis);
+  const quadPositions={
+    tl:{left:'3%',  top:'6%',    anchor:'left'},
+    tr:{right:'3%', top:'6%',    anchor:'right'},
+    bl:{left:'3%',  bottom:'6%', anchor:'left'},
+    br:{right:'3%', bottom:'6%', anchor:'right'}
+  };
+  const qlabels=['tl','tr','bl','br'].map(q=>{
+    const isNcl=q===nclQ;
+    const pos=quadPositions[q];
+    const posStyle=pos.bottom!==undefined
+      ? (pos.anchor==='right'?`right:${pos.right};bottom:${pos.bottom}`:`left:${pos.left};bottom:${pos.bottom}`)
+      : (pos.anchor==='right'?`right:${pos.right};top:${pos.top}`:`left:${pos.left};top:${pos.top}`);
+    return `<div id="qlabel-${q}" style="position:absolute;${posStyle};pointer-events:none;text-align:${pos.anchor};z-index:20;max-width:26%">
+      <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:${isNcl?'rgba(255,255,255,0.95)':'rgba(255,255,255,0.45)'};line-height:1.4;letter-spacing:0.01em;${isNcl?'text-shadow:0 0 20px rgba(44,196,224,0.6)':''}">${qNames[q]}</div>
+    </div>`;
+  }).join('');
+  // Tokens
+  const toks=LK.map(l=>{
+    const col=BRIGHT[l];
+    return `<div id="tok-${l}" class="map-tok" style="left:${toL(xd.s[l])}%;top:${toT(yd.s[l])}%">
+      <div class="tok-ring" style="color:${col};inset:-14px"></div>
+      <div class="tok-dot" style="background:${col};box-shadow:0 0 36px ${col}99,0 0 14px ${col}66;width:64px;height:64px"></div>
+      <div style="position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.92);background:rgba(15,35,60,0.88);border:1px solid rgba(44,196,224,0.25);border-radius:5px;padding:4px 10px;pointer-events:none;letter-spacing:.01em">${LN[l]}</div>
+    </div>`;
+  }).join('');
+  g('canvas').innerHTML=`
+    <div class="fadein">
+    <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+      <div class="card" id="chip-x" style="padding:8px 14px;font-size:12px;display:flex;align-items:center;gap:8px"><span class="lbl">X \u2192</span><b>${S.xAxis}</b><span style="color:var(--faint);font-size:10px">${xd.l} \u2194 ${xd.r}</span></div>
+      <div class="card" id="chip-y" style="padding:8px 14px;font-size:12px;display:flex;align-items:center;gap:8px"><span class="lbl">Y \u2191</span><b>${S.yAxis}</b><span style="color:var(--faint);font-size:10px">${yd.l} \u2194 ${yd.r}</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0;margin-bottom:16px">
+      <div style="display:flex;gap:0">
+        <!-- Y axis bar (west side) -->
+        <div id="ybar" style="width:44px;flex-shrink:0;background:rgba(44,196,224,0.25);border-radius:10px 0 0 0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(44,196,224,0.5);border-right:none;border-bottom:none">
+          <span style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.18em;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap">${S.yAxis}</span>
+        </div>
+        <!-- Map -->
+        <div style="position:relative;background:#1a3a5c;border-radius:0 16px 16px 0;aspect-ratio:4/3;flex:1;overflow:visible;box-shadow:0 8px 32px rgba(12,30,53,0.25),0 0 0 1px rgba(12,136,170,0.2)">
+          <div style="position:absolute;inset:0;border-radius:0 16px 16px 16px;overflow:hidden;background:linear-gradient(145deg,#1e4268 0%,#1a3a5c 60%,#162f4d 100%)">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">${rings}${gv}${gh}<line x1="50" y1="3" x2="50" y2="97" stroke="rgba(44,196,224,0.18)" stroke-width="0.35" stroke-dasharray="1 0.6"/><line x1="3" y1="50" x2="97" y2="50" stroke="rgba(44,196,224,0.18)" stroke-width="0.35" stroke-dasharray="1 0.6"/></svg>
+            ${axPills}
+          </div>
+          ${qlabels}
+          ${toks}
+        </div>
+      </div>
+      <!-- X axis bar (south side) -->
+      <div style="display:flex">
+        <div style="width:44px;flex-shrink:0;background:rgba(44,196,224,0.25);border-radius:0 0 0 10px;border:1px solid rgba(44,196,224,0.5);border-top:none;border-right:none"></div>
+        <div id="xbar" style="flex:1;height:44px;background:rgba(44,196,224,0.25);border-radius:0 0 10px 0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(44,196,224,0.5);border-top:none;border-left:none">
+          <span style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:#0C1E35;text-transform:uppercase;letter-spacing:.18em;white-space:nowrap">${S.xAxis}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="sandbox-take" style="padding:18px;border-left:3px solid var(--ncl)">
+      <div class="lbl" style="margin-bottom:6px">Executive Takeaway</div>
+      <p style="font-size:13.5px;color:var(--ink);line-height:1.6">${STAKES[S.xAxis]}</p>
+    </div>
+    <p style="font-size:11px;color:var(--faint);margin-top:8px">Axis scores are MMGY\u2019s directional assessment (scale \u221210 to +10). Designed to prompt discussion, not define fact.</p>
+    </div>`;
+}
+
+function updateSandboxMap(){
+  const xd=AXES[S.xAxis],yd=AXES[S.yAxis];
+  const toL=s=>50+s*4,toT=s=>50-s*4;
+  // Update token positions
+  LK.forEach(l=>{
+    const t=g(`tok-${l}`);
+    if(t){t.style.left=`${toL(xd.s[l])}%`;t.style.top=`${toT(yd.s[l])}%`;}
+    const sc=g(`sc-${l}`);
+    if(sc)sc.textContent=`x:${xd.s[l]} / y:${yd.s[l]}`;
+  });
+  // Update quadrant labels + NCL highlight
+  const nclQ=(yd.s.ncl>=0?'t':'b')+(xd.s.ncl>=0?'r':'l');
+  const qNames=getQuadrantNames(S.xAxis,S.yAxis);
+  const quadAligns={tl:'left',tr:'right',bl:'left',br:'right'};
+  ['tl','tr','bl','br'].forEach(q=>{
+    const el=g(`qlabel-${q}`);
+    if(!el)return;
+    const isNcl=q===nclQ;
+    el.style.textAlign=quadAligns[q];
+    el.innerHTML=`<div style="font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:${isNcl?'rgba(255,255,255,0.95)':'rgba(255,255,255,0.45)'};line-height:1.4;letter-spacing:0.01em;${isNcl?'text-shadow:0 0 20px rgba(44,196,224,0.6)':''}">${qNames[q]}</div>`;
+  });
+  // Update axis bars
+  const ybar=g('ybar'),xbar=g('xbar');
+  if(ybar)ybar.querySelector('span').textContent=S.yAxis;
+  if(xbar)xbar.querySelector('span').textContent=S.xAxis;
+  const xl=g('ax-xl'),xr=g('ax-xr'),yt=g('ax-yt'),yb=g('ax-yb');
+  if(xl)xl.textContent=`\u2190 ${xd.l.toUpperCase()}`;
+  if(xr)xr.textContent=`${xd.r.toUpperCase()} \u2192`;
+  if(yt)yt.textContent=`\u2191 ${yd.r.toUpperCase()}`;
+  if(yb)yb.textContent=`\u2193 ${yd.l.toUpperCase()}`;
+  // Update chips
+  const cx=g('chip-x'),cy=g('chip-y');
+  if(cx)cx.innerHTML=`<span class="lbl">X \u2192</span><b>${S.xAxis}</b><span style="color:var(--faint);font-size:10px">${xd.l} \u2194 ${xd.r}</span>`;
+  if(cy)cy.innerHTML=`<span class="lbl">Y \u2191</span><b>${S.yAxis}</b><span style="color:var(--faint);font-size:10px">${yd.l} \u2194 ${yd.r}</span>`;
+  // Update takeaway
+  const tk=g('sandbox-take');
+  if(tk)tk.innerHTML=`<div class="lbl" style="margin-bottom:6px">Executive Takeaway</div><p style="font-size:13.5px;color:var(--ink);line-height:1.6">${STAKES[S.xAxis]}</p>`;
+}
+
+/* ================================================================
+   STATE ACTIONS
+================================================================ */
+function switchTab(t){S.tab=t;renderHeader();renderTab();}
+function setFoe(v){S.foe=v;renderSwotSidebar();renderSwotCanvas();}
+function setLens(v){S.lens=v;renderSwotSidebar();renderSwotCanvas();}
+function setSeason(v){S.season=v;renderAtlasSidebar();renderAtlasCanvas();}
+function setRegion(v){S.region=v;renderAtlasSidebar();renderAtlasCanvas();}
+function setSel(v){S.sel=v;renderBrandSidebar();renderBrandCanvas();}
+function setXAxis(v){S.xAxis=v;if(S.yAxis===v){S.yAxis=AK.find(a=>a!==v);}renderSandboxSidebar();updateSandboxMap();}
+function setYAxis(v){S.yAxis=v;renderSandboxSidebar();updateSandboxMap();}
+
+function renderTab(){
+  if(S.tab==='swot'){renderSwotSidebar();renderSwotCanvas();}
+  else if(S.tab==='atlas'){renderAtlasSidebar();renderAtlasCanvas();}
+  else if(S.tab==='brand'){renderBrandSidebar();renderBrandCanvas();}
+  else if(S.tab==='sandbox'){renderSandboxSidebar();buildSandboxMap();}
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+renderHeader();
+renderTab();
 </script>
 </body>
 </html>
