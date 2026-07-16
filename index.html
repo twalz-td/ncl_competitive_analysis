@@ -263,7 +263,7 @@ function renderSwotCanvas(){
   const F=FOES[S.foe];const idx=F.idx[S.lens];const pct=50-idx/2;
   const nc=idx>=0?C.ncl:C[S.foe];
   const take=F.take[S.lens];
-  const PBAND=[{k:'msc',n:'MSC',pos:8,lbl:'~$700'},{k:'princess',n:'Princess',pos:40,lbl:'~$850+'},{k:'ncl',n:'NCL',pos:52,lbl:'~$800\u2013950',home:true},{k:'celebrity',n:'Celebrity',pos:65,lbl:'~$825 All-Incl.'},{k:'royal',n:'Royal (Icon)',pos:88,lbl:'~$1,000\u20131,300'}];
+  const PBAND=[{k:'msc',n:'MSC',pos:8,lbl:'~$700'},{k:'celebrity',n:'Celebrity',pos:35,lbl:'~$825 All-Incl.'},{k:'ncl',n:'NCL',pos:50,lbl:'~$800\u2013950',home:true},{k:'princess',n:'Princess',pos:63,lbl:'~$850+'},{k:'royal',n:'Royal (Icon)',pos:88,lbl:'~$1,000\u20131,300'}];
   const pb=S.lens==='pricing'?`
     <div class="card" style="padding:16px;margin-top:12px">
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
