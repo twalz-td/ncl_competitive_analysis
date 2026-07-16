@@ -238,7 +238,7 @@ function quadCell(type,items){
    RENDER: HEADER / TABS
 ================================================================ */
 function renderHeader(){
-  const TABS=[['swot','Head-to-Head SWOT'],['atlas','Deployment Atlas'],['brand','Brand vs. Delivery'],['sandbox','Strategic Sandbox']];
+  const TABS=[['swot','Head-to-Head SWOT'],['atlas','Itinerary Schedule'],['brand','Brand vs. Delivery'],['sandbox','Brand Positioning']];
   g('tabnav').innerHTML=TABS.map(([id,lbl])=>`<button class="tabbt${S.tab===id?' on':''}" onclick="switchTab('${id}')"><span class="tab-dot"></span>${lbl}</button>`).join('');
   g('sub').textContent=SUBS[S.tab];
 }
