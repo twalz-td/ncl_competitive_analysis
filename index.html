@@ -117,7 +117,7 @@ nav{background:white;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-
       <div class="hs"><div class="v">19,283</div><div class="l">Unique guest IDs</div></div>
       <div class="hs"><div class="v">13,725</div><div class="l">Actualized customers</div></div>
       <div class="hs"><div class="v">£70.6M</div><div class="l">Realised revenue</div></div>
-      <div class="hs"><div class="v">8,321</div><div class="l">Recommended seed</div></div>
+      <div class="hs"><div class="v">11,666</div><div class="l">Recommended seed</div></div>
       <div class="hs"><div class="v">~19M HH</div><div class="l">Est. addressable US universe</div></div>
     </div>
   </div>
@@ -462,29 +462,29 @@ nav{background:white;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-
 
   <div class="card" style="margin-bottom:1.4rem">
     <div class="ct">How the seed was built — audience cascade</div>
-    <p style="font-size:12px;color:var(--il);margin-bottom:1.2rem">Hover each bar for removal rationale.</p>
+    <p style="font-size:12px;color:var(--il);margin-bottom:1.2rem">.</p>
     <div id="seed-cascade" style="width:100%;"></div>
   </div>
 
   <div class="sb-box">
-    <h3>Recommended seed: 8,321 unique actualized customers</h3>
+    <h3>Recommended seed: 11,666 unique actualized customers</h3>
     <p>Two sequential gates applied to the 13,725 customers who actually travelled: composite value scoring (bottom 15% removed) then Mosaic alignment filtering (non-classifiable and non-aligned groups removed). All scoring done at the customer level — each customer represented by their full travel history with Exodus, not a single booking.</p>
     <div class="sk-row">
-      <div class="sk"><div class="skv">8,321</div><div class="skk">Unique customers</div></div>
-      <div class="sk"><div class="skv">£5,968</div><div class="skk">Avg lifetime rev</div></div>
-      <div class="sk"><div class="skv">£4,128</div><div class="skk">Median lifetime rev</div></div>
-      <div class="sk"><div class="skv">1.6</div><div class="skk">Avg trips</div></div>
+      <div class="sk"><div class="skv">11,666</div><div class="skk">Unique customers</div></div>
+      <div class="sk"><div class="skv">£5,860</div><div class="skk">Avg lifetime rev</div></div>
+      <div class="sk"><div class="skv">£4,112</div><div class="skk">Median lifetime rev</div></div>
+      <div class="sk"><div class="skv">1.5</div><div class="skk">Avg trips</div></div>
       <div class="sk"><div class="skv">62%</div><div class="skk">Female</div></div>
       <div class="sk"><div class="skv">188 days</div><div class="skk">Avg booking window</div></div>
     </div>
   </div>
 
-  <div class="warn-box"><p><strong>Seed size note:</strong> With 13,725 actualized customers as the starting pool, the two-gate methodology produces 8,321 — below Experian's preferred 10k minimum. This brief recommends presenting the 8,321 as a high-quality, behaviorally grounded seed built entirely from customers who completed a trip, and working with Experian to determine whether expanding to adjacent clusters or adjusting the value threshold is the right path to 10k without compromising model quality.</p></div>
+
 
   <div class="rs">
     <div class="rs-s"><div class="sn">1</div><div class="sb2"><h4>Score every actualized customer on composite value — gate one</h4><p>All 13,725 customers who actually travelled are scored on three behavioral signals: lifetime revenue (50%), actualized trip count (30%), and median booking window (20%). Scoring at the customer level means a repeater with 5 trips is evaluated on their full travel relationship with Exodus. The bottom 15% — 2,059 customers averaging £1,081 lifetime revenue, 1.0 trips, and a 72-day booking window — are removed as weak signal. These are customers who travelled once, spent minimally, and booked close to departure. 11,666 customers advance to gate two.</p></div></div>
-    <div class="rs-s"><div class="sn">2</div><div class="sb2"><h4>Keep only aligned Mosaic codes — gate two</h4><p>3,345 customers exit at gate two. 2,572 have no Mosaic code — without a cluster assignment they cannot be matched or scored against the US consumer database. 773 are in five groups that do not align with Exodus: Group F (Young Urban Mix), Group H (Modest Working Families), Group J (Small Town), Group N (Rural Relaxed), and Group O (Disconnected). These household profiles do not represent Exodus's addressable growth market. If you have a clean, aligned Mosaic code, you are in the seed.</p></div></div>
-    <div class="rs-s"><div class="sn">3</div><div class="sb2"><h4>The result — 8,321 actualized, high-signal customers</h4><p>The seed consists entirely of customers who planned their trip well, spent meaningfully, and followed through. 2,330 repeaters (28%), 5,991 one-time customers (72%). Average lifetime revenue £5,968 — 16% above the full actualized-customer average of £5,143. Median lifetime revenue £4,128. The seed is grounded in actual behavior — not booking intent — which is the strongest possible foundation for a lookalike model.</p></div></div>
+    <div class="rs-s"><div class="sn">2</div><div class="sb2"><h4>No Mosaic exclusion — Experian closes the data gap</h4><p>Of the 11,666 customers in the seed, 9,094 have a Mosaic code and 2,572 do not. All 11,666 are included. The 2,572 without a current code are actualized, high-value Exodus customers — they passed the same behavioral value gate as everyone else. Experian will assign Mosaic codes during the matching process, so excluding them would penalise good customers for a data gap the modeling process will resolve.</p></div></div>
+    <div class="rs-s"><div class="sn">3</div><div class="sb2"><h4>The result — 11,666 actualized, high-signal customers</h4><p>The seed consists entirely of customers who planned their trip well, spent meaningfully, and followed through. 2,880 repeaters (25%), 8,786 one-time customers (75%). Average lifetime revenue £5,860 — 14% above the full actualized-customer average of £5,143. Median lifetime revenue £4,112. The seed is grounded in actual travel behavior — not booking intent — which is the strongest possible foundation for a lookalike model.</p></div></div>
   </div>
 
   <div class="two">
@@ -498,7 +498,7 @@ nav{background:white;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-
 
   <div class="addr-box">
     <h3>Estimated US addressable universe from this seed</h3>
-    <p>Based on Experian Mosaic V8 US household distribution. The seed clusters represent ~15% of the ~128M US households in the Experian database.</p>
+    <p>Based on Experian Mosaic V8 US household distribution. The seed Mosaic clusters (covering 9,094 of the 11,666 seed customers) represent ~15% of the ~128M US households in the Experian database. Experian will classify the remaining 2,572 seed customers during the matching process.</p>
     <div class="addr-num">~19.2M</div>
     <div class="addr-label">Estimated US households in seed-priority Mosaic clusters</div>
     <div class="addr-row">
@@ -510,9 +510,7 @@ nav{background:white;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-
     <p style="margin-top:1rem;font-size:.8rem;color:rgba(255,255,255,.55)">Directional estimates only. Confirm final counts with Experian at project kickoff.</p>
   </div>
 
-  <div class="card"><div class="ct">Mosaic clusters excluded from seed</div>
-    <div class="mg" id="mgExclude"></div>
-  </div>
+
 </section>
 
 <script>
@@ -863,9 +861,9 @@ function buildCascade(){
   const container=document.getElementById('seed-cascade');
   if(!container) return;
   const steps=[
-    {label:'Actualized customers',n:13725,removed:null,color:'#3f6e90',reason:null},
-    {label:'Top 85% composite value',n:11666,removed:2059,color:'#1298ad',reason:'2,059 customers removed — bottom 15% on composite value score: 50% lifetime revenue, 30% actualized trip count, 20% median booking window. Removed profile: avg lifetime rev £1,081, avg 1.0 trips, avg 72-day booking window. Weak-signal customers who travelled once, spent minimally, and booked close to departure.'},
-    {label:'Aligned Mosaic codes only',n:8321,removed:3345,color:'#3d5c5c',reason:'3,345 customers removed: 2,572 with no Mosaic code (cannot be matched in consumer database) and 773 in non-aligned groups F (Young Urban Mix), H (Modest Working Families), J (Small Town), N (Rural Relaxed), O (Disconnected). If you have a clean, aligned Mosaic code, you are in the seed.'}
+    {label:'All unique customers',n:19283,removed:null,color:'#6b8085',reason:null},
+    {label:'Actualized customers',n:13725,removed:5558,color:'#3f6e90',reason:'5,558 customers removed — all bookings cancelled, no completed travel. These customers never took a trip with Exodus and carry no behavioral signal for a lookalike model.'},
+    {label:'Top 85% composite value',n:11666,removed:2059,color:'#3d5c5c',reason:'2,059 customers removed — bottom 15% on composite value score: 50% lifetime revenue, 30% actualized trip count, 20% median booking window. Removed profile: avg lifetime rev £1,081, avg 1.0 trips, avg 72-day booking window. These are customers who travelled once, spent minimally, and booked close to departure — the weakest behavioral signal in the file.'}
   ];
   const maxN=steps[0].n;
   const W=container.offsetWidth||700;
@@ -892,7 +890,7 @@ function buildCascade(){
       html+='<text x="'+(LEFT+barW-30)+'" y="'+(y+16)+'" text-anchor="middle" font-size="10" font-weight="700" fill="white" letter-spacing="0.06em">SEED</text>';
     }
   });
-  html+='<text x="'+LEFT+'" y="'+(H-8)+'" font-size="10" fill="#a0bec5">Bar width = % of starting pool · Hover each step for removal rationale</text>';
+  html+='<text x="'+LEFT+'" y="'+(H-8)+'" font-size="10" fill="#a0bec5">Bar width = % of starting pool</text>';
   html+='</svg>';
   container.innerHTML=html;
 }
@@ -902,7 +900,7 @@ buildCascade();
 mkChart('c_seedcomp','bar',{
   labels:['Lifetime rev (£k)','Avg trips','Booking window (d)','% Repeater','Avg age'],
   datasets:[
-    {label:'Seed (8,321)',data:[5.968,1.6,188,28,60],backgroundColor:TB,borderRadius:4,borderSkipped:false},
+    {label:'Seed (11,666)',data:[5.860,1.5,188,25,60],backgroundColor:TB,borderRadius:4,borderSkipped:false},
     {label:'Full actualized file',data:[5.143,1.5,185,21,60],backgroundColor:TD+'55',borderRadius:4,borderSkipped:false}
   ]
 },{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.y}}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:gc}}}});
@@ -912,20 +910,7 @@ mkChart('c_seedmos','bar',{
   datasets:[{data:[733,653,625,570,448,375,362,328],backgroundColor:TB,borderRadius:4,borderSkipped:false,label:'Seed customers'}]
 },{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc}}}});
 
-const excl=[
-  {c:'F22-F24',n:'Streamers and Spenders',d:'Lower-income urban singles with high digital consumption. Price and product mismatch with Exodus.',r:'Low spend, product mismatch'},
-  {c:'H28-H32',n:'Grounded Family Living',d:'Middle-income families, domestic-travel focused. Price positioning is a structural mismatch.',r:'Product and price mismatch'},
-  {c:'J35-J38',n:'Busy Family Builders',d:'Younger families, family-first budgeting. Not core seed today.',r:'Life stage mismatch'},
-  {c:'N48-N52',n:'Country Living',d:'Rural households with traditional leisure patterns. Geographic and demographic distance from the Exodus buyer.',r:'Geographic and demographic mismatch'},
-  {c:'O53-O54',n:'Quiet Community Living',d:'Elderly seniors with limited mobility and fixed incomes. Does not align with active adventure requirement.',r:'Activity level mismatch'}
-];
-const mgE=document.getElementById('mgExclude');
-excl.forEach(c=>{
-  const div=document.createElement('div');
-  div.className='mc ex';
-  div.innerHTML='<span class="sdb cx">Excluded</span><div class="mco">'+c.c+'</div><div class="mn">'+c.n+'</div><div class="md">'+c.d+'</div><div class="ms"><div><span class="msv">'+c.r+'</span></div></div>';
-  mgE.appendChild(div);
-});
+
 
 // ── FILTER LOGIC ────────────────────────────────────────────────
 function updateKPIs(st){
